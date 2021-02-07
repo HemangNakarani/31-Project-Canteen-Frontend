@@ -1,16 +1,10 @@
-import logo from './logo.svg';
 import './App.css';
+import food from "./Assets/food_home.png"
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Ahh Shit !! Here we goo.
-        </p>
-        <a href="https://github.com/HemangNakarani/Project-Canteen-Frontend" style={{color:"#fff"}}>Go here if you are in 31</a>
-      </header>
+      <img src={food} style={{width:"100%", height:"100%"}} alt="dashboard"/>
     </div>
   );
 }
