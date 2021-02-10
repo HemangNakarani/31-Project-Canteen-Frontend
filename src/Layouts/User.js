@@ -195,7 +195,7 @@ function User(){
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title} noWrap>
-            Welcome to McDA's
+            <span style={{color:"red"}}>M</span>cDA's Dashboard
           </Typography>
           <div className={classes.search}>
             <div className={classes.searchIcon}>

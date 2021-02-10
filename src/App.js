@@ -18,7 +18,7 @@ export default function App() {
       },
       secondary: {
         // This is green.A700 as hex.
-        main: '#eaf2ff',
+        main: '#ffeaf0',
       },
     },
   });
