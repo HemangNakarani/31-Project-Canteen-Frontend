@@ -71,6 +71,7 @@ const useStyles = makeStyles((theme) => ({
       },
   },
   drawerOpen: {
+    backgroundColor: theme.palette.primary.main,
     width: drawerWidth,
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
@@ -236,11 +237,11 @@ function User(){
               <ListItemIcon><RestaurantMenuIcon /></ListItemIcon>
               <ListItemText primary="Menu" />
             </ListItem>
-            <ListItem button key="Canteens">
+            <ListItem button key="Canteens" onClick={()=>history.push('/canteens')}>
               <ListItemIcon><FastfoodIcon /></ListItemIcon>
               <ListItemText primary="Canteens" />
             </ListItem>
-            <ListItem button key="Settings">
+            <ListItem button key="Settings" onClick={()=>history.push('/settings')}>
               <ListItemIcon><SettingsIcon /></ListItemIcon>
               <ListItemText primary="Settings" />
             </ListItem>

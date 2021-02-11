@@ -1,5 +1,4 @@
 import React from "react";
-import './App.css';
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import UserLayout from "./Layouts/User.js";
 import AuthLayout from "./Layouts/Auth.js";
@@ -18,9 +17,15 @@ export default function App() {
       },
       secondary: {
         // This is green.A700 as hex.
-        main: '#ffeaf0',
+        main: '#0e041c',
       },
     },
+    typography:{
+      fontFamily: [
+        'Poppins',
+        'sans-serif',
+      ].join(','),
+    }
   });
 
   return (

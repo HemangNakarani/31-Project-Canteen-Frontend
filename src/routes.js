@@ -2,6 +2,8 @@ import LoginPage from './Pages/Login';
 import IndexPage from './Pages/Index';
 import ProfilePage from './Pages/Profile';
 import CartPage from './Pages/Cart';
+import CanteensPage from './Pages/Canteens';
+import SettingsPage from './Pages/Settings';
 
 var routes = [
   {
@@ -20,6 +22,18 @@ var routes = [
     path: "cart",
     name: "Cart",
     component: CartPage,
+    layout: "/"
+  },
+  {
+    path: "canteens",
+    name: "Canteens",
+    component: CanteensPage,
+    layout: "/"
+  },
+  {
+    path: "settings",
+    name: "Settings",
+    component: SettingsPage,
     layout: "/"
   },
   {
