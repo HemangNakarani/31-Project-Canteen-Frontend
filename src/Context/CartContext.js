@@ -1,9 +1,9 @@
-import React, { useState, useContext, useReducer, useEffect } from 'react'
+import React, {  useContext, useReducer, useEffect } from 'react'
 import cartItems from '../Assets/data'
 import reducer from './CartReducer'
 // ATTENTION!!!!!!!!!!
 // I SWITCHED TO PERMANENT DOMAIN
-const url = 'https://course-api.com/react-useReducer-cart-project'
+//const url = 'https://course-api.com/react-useReducer-cart-project'
 const AppContext = React.createContext()
 
 const initialState = {
