@@ -1,4 +1,4 @@
-import React from "react";
+import React,{Suspense} from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 
 import routes from "../routes.js";
@@ -23,10 +23,12 @@ function Auth(){
     return (
       <>
         <div>
-              <Switch>
-                {getRoutes(routes)}
-                <Redirect from="*" to="/auth/login" />
-              </Switch>
+          <Suspense fallback={<div>Loading...</div>}>
+                <Switch>
+                  {getRoutes(routes)}
+                  <Redirect from="*" to="/auth/login" />
+                </Switch>
+          </Suspense>
         </div>
       </>
     );

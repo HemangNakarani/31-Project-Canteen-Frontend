@@ -1,4 +1,4 @@
-import React from "react";
+import React,{Suspense} from "react";
 import { Route, Switch, Redirect,useHistory } from "react-router-dom";
 import routes from "../routes.js";
 import clsx from 'clsx';
@@ -261,10 +261,12 @@ function User(){
       <main className={classes.content}>
         <div className={classes.toolbar} />
         <div>
+        <Suspense fallback={<div>Loading...</div>}>
           <Switch>
             {getRoutes(routes)}
             <Redirect from="*" to="/index" />
           </Switch>
+        </Suspense>
         </div>
       </main>
     </div>);

@@ -1,14 +1,15 @@
 import React from "react";
-import { AppProvider } from '../Context/CartContext';
-import TempApp from '../Components/TempApp';
-import '../Components/cartindex.css';
+import { CartContextProvider } from '../Context/CartContext';
+import CartContainer from '../Components/CartContainer'
 
 function Cart(props)
 {
-
-    return <AppProvider>
-        <TempApp />
-    </AppProvider>
+    return (
+    <CartContextProvider>
+        <main>
+            <CartContainer />
+        </main>        
+    </CartContextProvider>)
 }
 
 export default Cart;
