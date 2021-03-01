@@ -1,50 +1,73 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import CartItem from './CartItem'
-import { useGlobalContext } from '../Context/CartContext'
+import { useCartContext } from '../Context/CartContext'
+import {Button,Typography,Grid,Container,Divider,Box,makeStyles, Paper} from '@material-ui/core'
+
+const useStyles = makeStyles((theme) => ({
+  divider:{
+    marginTop:32,
+    marginBottom:16
+  },
+  total:{
+    padding:8,
+  },
+}));
 
 const CartContainer = () => {
-  const { cart, total, clearCart } = useGlobalContext()
+  const { cart, total, clearCart,loading } = useCartContext()
+  const classes = useStyles()
+
   if (cart.length === 0) {
     return (
-      <section className='cart'>
-        {/* cart header */}
-        <header>
-          <h2>your bag</h2>
-          <h4 className='empty-cart'>is currently empty</h4>
-        </header>
-      </section>
+      <>
+      <Container maxWidth="md">
+          <Typography variant="h4">Your bag</Typography>
+          <Typography variant="subtitle1" color="textSecondary">is currently empty</Typography>
+      </Container>
+      </>
     )
   }
   return (
-    <section className='cart'>
-      {/* cart header */}
-      <header>
-        <h2>your bag</h2>
-      </header>
-      {/* cart items */}
-      <div>
-        {cart.map((item) => {
-          if(item.amount>0)
-          {return <CartItem key={item.id} {...item} />}
-          else
-          {
-            return <div />
-          }
-        })}
-      </div>
-      {/* cart footer */}
-      <footer>
-        <hr />
-        <div className='cart-total'>
-          <h4>
-            total <span>{total}</span>
-          </h4>
-        </div>
-        <button className='btn clear-btn' onClick={clearCart}>
-          clear cart
-        </button>
-      </footer>
-    </section>
+    loading ?
+    <Fragment>
+      <Typography>Loading...</Typography>
+    </Fragment>
+      :
+      <>
+      <Container maxWidth="md">
+        <Typography variant="h4">Your bag</Typography>
+        <Grid container>
+          {cart.map((item) => {
+            if(item.amount>0)
+            {return(
+              <Grid>
+                <CartItem key={item.id} {...item} />
+              </Grid>)}
+            else
+            {
+              return( <div key={item.id} />)
+            }
+          })}
+        </Grid>
+
+        <Divider className={classes.divider} variant="fullWidth"/>
+
+        <Box display="flex">
+          <Box p={1} flexGrow={1} >
+            <Button variant="contained" color="secondary" onClick={clearCart}>
+              Clear Cart
+            </Button>
+          </Box>
+          <Box p={1}>
+            <Paper variant="outlined" className={classes.total}>
+              <Typography variant="h5">
+                Total {":>"}  <span>{total}</span>
+              </Typography>
+            </Paper>
+          </Box>
+        </Box>
+      </Container>
+      </>
   )
 }
 
