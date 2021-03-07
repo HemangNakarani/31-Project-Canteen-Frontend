@@ -1,7 +1,7 @@
 import React from "react";
 import { GoogleLogout } from 'react-google-login';
 import { useUserDispatch, signOut } from '../Context/UserContext';
-import {TextField,Button,Typography} from '@material-ui/core';
+import {Grid,Typography,TextField,Divider,makeStyles,Box,Fab,CssBaseline,useMediaQuery,Button} from '@material-ui/core'
 
 const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID || "";
 
@@ -19,7 +19,9 @@ const Profile = (props) => {
   }
 
   return (
+    
     <div>
+      
       <div style={{
         display: "flex",
         justifyContent: "space-around",
@@ -38,8 +40,8 @@ const Profile = (props) => {
 
         <div>
           <h4 style={HeadingStyle}>
-            Username:
-            <TextField id="outlined-basic" label="Outlined" variant="outlined" defaultValue={props.Name} />
+            {/* Username: */}
+            <TextField id="outlined-basic" label="User Name" variant="outlined" defaultValue={props.Name} />
           </h4>
 
           <Typography variant="body2">
