@@ -1,7 +1,6 @@
 import React, {  useContext, useReducer, useEffect } from 'react'
 import cartItems from '../Assets/data'
-// ATTENTION!!!!!!!!!!
-// I SWITCHED TO PERMANENT DOMAIN
+
 //const url = 'https://course-api.com/react-useReducer-cart-project'
 const CartContext = React.createContext()
 
@@ -134,7 +133,7 @@ const CartContextProvider = ({ children }) => {
     </CartContext.Provider>
   )
 }
-// make sure use
+
 export const useCartContext = () => {
   return useContext(CartContext)
 }
