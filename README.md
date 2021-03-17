@@ -27,11 +27,14 @@ A Canteen Automation project targeted to mainly DAIICT Canteens :)
   ```
   cd Project-31
   ```
-  ## If working in Frontend then do following, make sure yarn is installed in your machine
+  ```
+  git remote add upstream https://github.com/HemangNakarani/Project-31.git
+  ```
+  ## If working in Frontend then do following, make sure node is installed in your machine
   ```
   cd canteenia-frontend
-  yarn install 
-  yarn start
+  npm install 
+  npm start
   ```
   ## If working in Backend then do following, make sure Java,JDK and Postgres is installed in your machine
   ```
@@ -57,7 +60,7 @@ A Canteen Automation project targeted to mainly DAIICT Canteens :)
   ```
   git add .
   git commit -m "<COMMIT MESSAGE>"
-  git push origin <BRANCH NAME>
+  git push -u origin <BRANCH NAME>
   ```
   - Go to Github, Open this project and Open Pull Request
   
