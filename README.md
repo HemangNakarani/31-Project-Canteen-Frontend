@@ -7,7 +7,7 @@ A Canteen Automation project targeted to mainly DAIICT Canteens :)
 - Java Spring Boot : Backend
 - React.js : FrontEnd
 - AWS Relational Database System : PostgreSQL
-- AWS CodePipeline : Ci-CD
+- AWS CodePipeline : CI-CD
 - AWS ElasticBeanStalk : Deployment Backend
 - Netlify : Deployment Frontend
 
@@ -21,24 +21,21 @@ A Canteen Automation project targeted to mainly DAIICT Canteens :)
   - Java JDK
 
 - Run Following Commands
-  ```
-  git clone https://github.com/HemangNakarani/Project-31.git
-  ```
-  ```
-  cd Project-31
-  ```
-  ```
-  git remote add upstream https://github.com/HemangNakarani/Project-31.git
-  ```
   ## If working in Frontend then do following, make sure node is installed in your machine
   ```
-  cd canteenia-frontend
+  git clone https://github.com/HemangNakarani/31-Project-Canteen-Frontend.git
+  cd 31-Project-Canteen-Frontend
+  git remote add upstream https://github.com/HemangNakarani/31-Project-Canteen-Frontend.git
+  ```
+  ```
   npm install 
   npm start
   ```
   ## If working in Backend then do following, make sure Java,JDK and Postgres is installed in your machine
   ```
-  cd canteenia-server
+  git clone https://github.com/HemangNakarani/Project-Canteen-Backend.git
+  cd Project-Canteen-Backend
+  git remote add upstream https://github.com/HemangNakarani/Project-Canteen-Backend.git
   ```
     - Set environment variables in your system environment mentioned in `src/main/resources/application.properties`
     - Run These 3 queries in pgAdmin
