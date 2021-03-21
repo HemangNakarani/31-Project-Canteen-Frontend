@@ -1,8 +1,8 @@
 
 import {lazy} from "react";
 
-const LoginPage = lazy(() => import('./Pages/Login'));
-const SignupPage = lazy(() => import('./Pages/SignupPage'))
+const LoginPage = lazy(() => import('./Pages/AuthView/Login'));
+const SignupPage = lazy(() => import('./Pages/AuthView/Signup'))
 const IndexPage = lazy(() => import('./Pages/Index'));
 const ProfilePage = lazy(() => import('./Pages/AccountView'));
 const CartPage = lazy(() => import('./Pages/Cart'));

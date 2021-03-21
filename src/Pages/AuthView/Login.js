@@ -1,11 +1,10 @@
 import React, { useEffect } from "react";
 import GoogleLogin from 'react-google-login';
 import { useHistory } from 'react-router-dom';
-import { useUserDispatch, loginUser } from '../Context/UserContext';
+import { useUserDispatch, loginUser } from '../../Context/UserContext';
 import "./Login.css";
 
-// const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID || "";
-const GOOGLE_CLIENT_ID = "638324418102-ph6j8qqubi8tpl1l8drhfb9mqrrrvd8k.apps.googleusercontent.com";
+const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID || "";
 
 function Login(props) {
   var userDispatch = useUserDispatch();
@@ -15,7 +14,6 @@ function Login(props) {
   })
 
   const history = useHistory();
-
 
   return <>
 
@@ -33,13 +31,7 @@ function Login(props) {
               <input type="password" placeholder="Password" />
             </div>
 
-            <input type="submit" value="Login" class="btn solid" onClick={() => {
-
-
-
-
-
-            }} />
+            <input type="submit" value="Login" class="btn solid" onClick={() => {}} />
             <p>Or</p>
             <GoogleLogin
               clientId={GOOGLE_CLIENT_ID}
@@ -79,30 +71,17 @@ function Login(props) {
 
           <div class="content">
             <h2>Welcome to <span style={{ color: 'red' }}>M</span>cDA's!</h2>
-
-
             <h3>Are you New here ?</h3>
             <p>
               You don't have account then sign up in just minutes.
             </p>
-            <button class="btn transparent" onClick={() => {
-
-              history.push('/auth/signup')
-
-
-
-
-            }} id="sign-up-btn" >
+            <button class="btn transparent" onClick={() => {history.push('/auth/signup')}} id="sign-up-btn" >
               Sign up
             </button>
           </div>
-
         </div>
-        
       </div>
     </div>
-
-
   </>
 }
 
