@@ -1,25 +1,69 @@
-## Available Scripts
+# Project-31
+A Canteen Automation project targeted to mainly DAIICT Canteens :)
 
-In the project directory, you can run:
+## [Here](https://github.com/HemangNakarani/Project-Canteen-Backend) is Backend Part of Project
 
-### `npm install`
+# Technology Stack
+- Java Spring Boot : Backend
+- React.js : FrontEnd
+- AWS Relational Database System : PostgreSQL
+- AWS CodePipeline : CI-CD
+- AWS ElasticBeanStalk : Deployment Backend
+- Netlify : Deployment Frontend
 
-Installs all the dependencies in defined package.json file.\
+# How to contribute ?
+- Install the tools 
+  - Visual Studio Code
+  - IntelliJ IDEA
+  - PostgreSQL/PgAdmin
+  - Postman
+  - Yarn
+  - Java JDK
 
-### `npm start`
+- Run Following Commands
+  ## If working in Frontend then do following, make sure node is installed in your machine
+  ```
+  git clone https://github.com/HemangNakarani/31-Project-Canteen-Frontend.git
+  cd 31-Project-Canteen-Frontend
+  git remote add upstream https://github.com/HemangNakarani/31-Project-Canteen-Frontend.git
+  ```
+  ```
+  npm install 
+  npm start
+  ```
+  ## If working in Backend then do following, make sure Java,JDK and Postgres is installed in your machine
+  ```
+  git clone https://github.com/HemangNakarani/Project-Canteen-Backend.git
+  cd Project-Canteen-Backend
+  git remote add upstream https://github.com/HemangNakarani/Project-Canteen-Backend.git
+  ```
+    - Set environment variables in your system environment mentioned in `src/main/resources/application.properties`
+    - Run These 3 queries in pgAdmin
+      ```
+      INSERT INTO roles(name) VALUES('ROLE_USER');
+      INSERT INTO roles(name) VALUES('ROLE_OWNER');
+      INSERT INTO roles(name) VALUES('ROLE_ADMIN');
+      ```
+    - build your project in IntelliJ IDEA and Run it.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
+- Make Changes in project
+- Now we need to send our changes to github, so run following
+  - Create new branch for the first time only, otherwise skip this command
+  ```
+  git checkout -b dev-<YOUR NAME>
+  ```
+  - Now Add and Commit and push
+  ```
+  git add .
+  git commit -m "<COMMIT MESSAGE>"
+  git push -u origin <BRANCH NAME>
+  ```
+  - Go to Github, Open this project and Open Pull Request
+  
+# Some conventions we need to follow
+- Change only files in which others are not working, otherwise it will lead to conflict.
+- Complete your assigned task within a week.
+- Properly Run and Test edge cases in your code and Softeware, then only push the changes.
+- Search before ask, find solution your self. If you feel very confused then ask. Learn Continuously !
+- Your every contribution will be counted, so try to interect and contribute as much as you can.

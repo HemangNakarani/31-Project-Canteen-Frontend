@@ -1,10 +1,14 @@
-import LoginPage from './Pages/Login';
-import IndexPage from './Pages/Index';
-import SignupPage from "./Pages/SignupPage";
-import ProfilePage from './Pages/Profile';
-import CartPage from './Pages/Cart';
-import CanteensPage from './Pages/Canteens';
-import SettingsPage from './Pages/Settings';
+
+import {lazy} from "react";
+
+const LoginPage = lazy(() => import('./Pages/Login'));
+const SignupPage = lazy(() => import('./Pages/SignupPage'))
+const IndexPage = lazy(() => import('./Pages/Index'));
+const ProfilePage = lazy(() => import('./Pages/AccountView'));
+const CartPage = lazy(() => import('./Pages/Cart'));
+const CanteensPage = lazy(() => import('./Pages/Canteens'));
+const SettingsPage = lazy(() => import('./Pages/Settings'));
+
 
 var routes = [
   {
