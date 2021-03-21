@@ -1,5 +1,6 @@
 import LoginPage from './Pages/Login';
 import IndexPage from './Pages/Index';
+import SignupPage from "./Pages/SignupPage";
 import ProfilePage from './Pages/Profile';
 import CartPage from './Pages/Cart';
 import CanteensPage from './Pages/Canteens';
@@ -40,6 +41,12 @@ var routes = [
     path: "/login",
     name: "Login",
     component: LoginPage,
+    layout: "/auth"
+  },
+  {
+    path: "/signup",
+    name: "Signup",
+    component: SignupPage,
     layout: "/auth"
   }
 
