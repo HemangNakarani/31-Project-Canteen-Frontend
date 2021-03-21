@@ -1,11 +1,10 @@
 import React, { useEffect } from "react";
 import GoogleLogin from 'react-google-login';
 import { useHistory } from 'react-router-dom';
-import { useUserDispatch, loginUser } from '../Context/UserContext';
+import { useUserDispatch, loginUser } from '../../Context/UserContext';
 import "./Login.css";
 
-// const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID || "";
-const GOOGLE_CLIENT_ID = "638324418102-ph6j8qqubi8tpl1l8drhfb9mqrrrvd8k.apps.googleusercontent.com";
+const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID || "";
 
 function SignupPage(props) {
     var userDispatch = useUserDispatch();
@@ -14,8 +13,6 @@ function SignupPage(props) {
 
     })
     const history = useHistory();
-
-
 
     return <>
 
@@ -68,9 +65,6 @@ function SignupPage(props) {
                             <input type="password" placeholder="Password" />
                         </div>
                         <input type="submit" class="btn" value="Sign up" />
-
-
-
                     </form>
                 </div>
             </div>
@@ -81,17 +75,14 @@ function SignupPage(props) {
 
                     <div class="content">
                         <h2>Welcome to <span style={{ color: 'red' }}>M</span>cDA's!</h2>
-
-
-                        <p>If you have already account,then just Login </p>
+                        
+                        <p>Login Here </p>
 
                         <button class="btn transparent" onClick={() => {
                             history.push('/auth/login');
-
-
                         }} id="sign-up-btn" >
                             Login
-            </button>
+                        </button>
                     </div>
 
                 </div>
