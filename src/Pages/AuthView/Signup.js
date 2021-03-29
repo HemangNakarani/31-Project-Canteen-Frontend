@@ -43,6 +43,7 @@ function SignupPage(props) {
                         <GoogleLogin
                             clientId={GOOGLE_CLIENT_ID}
                             buttonText="Sign In with Google"
+                            hostedDomain="daiict.ac.in"
                             onSuccess={(response) => {
                                 loginUser(userDispatch, props.history, response);
                             }}

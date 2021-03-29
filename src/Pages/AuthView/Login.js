@@ -36,6 +36,7 @@ function Login(props) {
             <GoogleLogin
               clientId={GOOGLE_CLIENT_ID}
               buttonText="Sign In with Google"
+              hostedDomain="daiict.ac.in"
               onSuccess={(response) => {
                 loginUser(userDispatch, props.history, response);
               }}
@@ -43,7 +44,7 @@ function Login(props) {
             />
           </form>
 
-          <form action="#" class="sign-up-form">
+          <form action="#" className="sign-up-form">
             <h2 class="title">Sign up</h2>
             <div class="input-field">
               <i class="fas fa-user"></i>

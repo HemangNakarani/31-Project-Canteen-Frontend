@@ -8,9 +8,30 @@ const ProfilePage = lazy(() => import('./Pages/AccountView'));
 const CartPage = lazy(() => import('./Pages/Cart'));
 const CanteensPage = lazy(() => import('./Pages/Canteens'));
 const SettingsPage = lazy(() => import('./Pages/Settings'));
+const LiveOrdersPage = lazy(() => import('./Pages/LiveOrders'));
+const OwnerDashboardPage = lazy(() => import('./Pages/OwnerDashboard'));
+const OwnerAccounts = lazy(() => import('./Pages/OwnerAccounts'));
 
 
 var routes = [
+  {
+    path: "/dashboard",
+    name: "owner Dashboard",
+    component: OwnerDashboardPage, 
+    layout: "/owner"
+  },
+  {
+    path: "/accounts",
+    name: "Owner Acoounts",
+    component: OwnerAccounts,
+    layout: "/owner"
+  },
+  {
+    path: "/live",
+    name: "Live Orders",
+    component: LiveOrdersPage,
+    layout: "/owner"
+  },
   {
     path: "index",
     name: "Dashboard",
