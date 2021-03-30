@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import UserLayout from "./Layouts/User.js";
+import OwnerLayout from "./Layouts/Owner.js";
 import AuthLayout from "./Layouts/Auth.js";
 import { createMuiTheme,ThemeProvider } from '@material-ui/core/styles';
 import {useUserState} from './Context/UserContext';
@@ -32,7 +33,7 @@ export default function App() {
     <ThemeProvider theme={theme}>
       <BrowserRouter>
         <Switch>
-          <PrivateRoute path="/" component={UserLayout} />
+          <PrivateRoute path="/"/>
           <PublicRoute path="/auth" component={AuthLayout} />
         </Switch>
       </BrowserRouter>
@@ -41,16 +42,25 @@ export default function App() {
   );
 
 
-  function PrivateRoute({ component, ...rest }) {
+  function PrivateRoute({...rest}) {
     return (
       <Route
         {...rest}
         render={props =>
-          isAuthenticated ? (
-            React.createElement(component, props)
-          ) : (
-            <AuthLayout {...props} />
-          )
+          {
+            if(isAuthenticated && process.env.REACT_APP_DEV_MODE==='owner')
+            {
+              return(React.createElement(OwnerLayout, props))
+            }
+            else if (isAuthenticated && process.env.REACT_APP_DEV_MODE==='user')
+            {
+              return(React.createElement(UserLayout, props))
+            }
+            else
+            {
+              return(<AuthLayout {...props} />)  
+            }
+          }
         }
       />
     );
