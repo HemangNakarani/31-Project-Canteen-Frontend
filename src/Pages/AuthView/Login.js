@@ -1,89 +1,154 @@
-import React, { useEffect } from "react";
-import GoogleLogin from 'react-google-login';
-import { useHistory } from 'react-router-dom';
-import { useUserDispatch, loginUser } from '../../Context/UserContext';
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
+import { useUserDispatch, loginUser } from "../../Context/UserContext";
+import {
+  TextField,
+  Card,
+  makeStyles,
+  Typography,
+  Snackbar,
+} from "@material-ui/core";
+import MuiAlert from "@material-ui/lab/Alert";
+import { LogIn } from "../../APIs/AuthenticationCalls";
 import "./Login.css";
 
-const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID || "";
+const useStyles = makeStyles((theme) => ({
+  divider: {
+    marginTop: 8,
+    "&:hover, &:focus": {
+      color: theme.palette.secondary.main,
+    },
+  },
+  card: {
+    margin: "4em",
+    paddingTop: "2em",
+    paddingBottom: "2em",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  text: {
+    margin: "0.6em",
+  },
+}));
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 function Login(props) {
-  var userDispatch = useUserDispatch();
 
-  useEffect(() => {
+  const [details, setDetails] = useState({
+    username: "",
+    password: "",
+  });
 
-  })
-
+  const [open, setAlertOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const history = useHistory();
+  const classes = useStyles();
+  const userDispatch = useUserDispatch();
 
-  return <>
 
-    <div class="container">
-      <div class="forms-container">
-        <div class="signin-signup">
-          <form action="#" class="sign-in-form">
-            <h2 class="register-title">Sign in</h2>
-            <div class="input-field">
-              <i class="fas fa-user"></i>
-              <input type="text" placeholder="Username" />
-            </div>
-            <div class="input-field">
-              <i class="fas fa-lock"></i>
-              <input type="password" placeholder="Password" />
-            </div>
+  const handleErrorOpen = () => {
+    setAlertOpen(true);
+  };
 
-            <input type="submit" value="Login" class="btn solid" onClick={() => {}} />
-            <p>Or</p>
-            <GoogleLogin
-              clientId={GOOGLE_CLIENT_ID}
-              buttonText="Sign In with Google"
-              hostedDomain="daiict.ac.in"
-              onSuccess={(response) => {
-                loginUser(userDispatch, props.history, response);
-              }}
-              onFailure={console.log}
-            />
-          </form>
+  const handleErrorClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
 
-          <form action="#" className="sign-up-form">
-            <h2 class="title">Sign up</h2>
-            <div class="input-field">
-              <i class="fas fa-user"></i>
-              <input type="text" placeholder="Username" />
-            </div>
-            <div class="input-field">
-              <i class="fas fa-envelope"></i>
-              <input type="email" placeholder="Email" />
-            </div>
-            <div class="input-field">
-              <i class="fas fa-lock"></i>
-              <input type="password" placeholder="Password" />
-            </div>
-            <input type="submit" class="btn" value="Sign up" />
+    setAlertOpen(false);
+  };
 
-            {/* <p class="social-text">Or Sign up with social platforms</p> */}
+  function doLogIn() {
+    LogIn(details.username, details.password)
+      .then(({data}) => {
+          console.log(data);
+          loginUser(userDispatch,history,data);
+      })
+      .catch((err) => {
+        setErrorMessage(err.response.data.message);
+        handleErrorOpen();
+      });
+  }
 
-          </form>
+
+  return (
+    <>
+      <div class="container">
+        <div class="forms-container">
+          <div class="signin-signup">
+            <Card elevation={5} className={classes.card}>
+              <Typography variant="h4" className={classes.text}>
+                Log In
+              </Typography>
+              <TextField
+                color="secondary"
+                className={classes.text}
+                label="Username"
+                name="username"
+                onChange={(e) => {
+                  setDetails({ ...details, username: e.target.value });
+                }}
+                required
+                value={details.username}
+                variant="outlined"
+              />
+              <TextField
+                color="secondary"
+                className={classes.text}
+                label="Password"
+                name="password"
+                onChange={(e) => {
+                  setDetails({ ...details, password: e.target.value });
+                }}
+                required
+                value={details.password}
+                variant="outlined"
+              />
+
+              <button class="btn solid" onClick={() => doLogIn()}>
+                Log In
+              </button>
+            </Card>
+            <Snackbar
+              open={open}
+              autoHideDuration={6000}
+              onClose={handleErrorClose}
+            >
+              <Alert onClose={handleErrorClose} severity="error">
+                {errorMessage}
+              </Alert>
+            </Snackbar>
+          </div>
         </div>
-      </div>
 
-      <div class="panels-container">
-
-        <div class="panel left-panel">
-
-          <div class="content">
-            <h2>Welcome to <span style={{ color: 'red' }}>M</span>cDA's!</h2>
-            <h3>Are you New here ?</h3>
-            <p>
-              You don't have account then sign up in just minutes.
-            </p>
-            <button class="btn transparent" onClick={() => {history.push('/auth/signup')}} id="sign-up-btn" >
-              Sign up
-            </button>
+        <div class="panels-container">
+          <div class="panel left-panel">
+            <div class="content">
+              <h2>
+                Welcome to <span style={{ color: "red" }}>M</span>cDA's!
+              </h2>
+              <h3>Are you New here ?</h3>
+              <p>You don't have account then sign up in just minutes.</p>
+              <button
+                class="btn transparent"
+                onClick={() => {
+                  history.push("/auth/signup");
+                }}
+                id="sign-up-btn"
+              >
+                Sign up
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </>
+    </>
+  );
 }
 
 export default Login;

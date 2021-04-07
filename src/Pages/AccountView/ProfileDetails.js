@@ -13,6 +13,8 @@ import {
   makeStyles
 } from '@material-ui/core';
 
+import {useUserState} from '../../Context/UserContext';
+
 const states = [
   {
     value: 'alabama',
@@ -42,6 +44,8 @@ const ProfileDetails = ({ className, ...rest }) => {
     state: 'Alabama',
     country: 'USA'
   });
+
+  const {name,email} = useUserState();
 
   const handleChange = (event) => {
     setValues({
@@ -80,7 +84,7 @@ const ProfileDetails = ({ className, ...rest }) => {
                 name="firstName"
                 onChange={handleChange}
                 required
-                value={values.firstName}
+                value={name}
                 variant="outlined"
               />
             </Grid>
@@ -95,7 +99,7 @@ const ProfileDetails = ({ className, ...rest }) => {
                 name="lastName"
                 onChange={handleChange}
                 required
-                value={values.lastName}
+                value={name}
                 variant="outlined"
               />
             </Grid>
@@ -110,7 +114,7 @@ const ProfileDetails = ({ className, ...rest }) => {
                 name="email"
                 onChange={handleChange}
                 required
-                value={values.email}
+                value={email}
                 variant="outlined"
               />
             </Grid>

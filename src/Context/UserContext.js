@@ -6,7 +6,7 @@ var UserDispatchContext = React.createContext();
 function userReducer(state, action) {
   switch (action.type) {
     case "LOGIN_SUCCESS":
-      return { ...state, isAuthenticated: true, name: localStorage.name, picture: localStorage.picture };
+      return { ...state, isAuthenticated: true, name: localStorage.name, email: localStorage.email, id:localStorage.id, role:localStorage.role};
     case "SIGN_OUT_SUCCESS":
       return { ...state, isAuthenticated: false };
     default: {
@@ -17,9 +17,11 @@ function userReducer(state, action) {
 
 function UserProvider({ children }) {
   var [state, dispatch] = React.useReducer(userReducer, {
-    isAuthenticated: !!localStorage.getItem("google_token"),
+    isAuthenticated: !!localStorage.getItem("token"),
     name: localStorage.getItem("name"),
-    picture: localStorage.getItem("picture"),
+    email: localStorage.getItem("email"),
+    id: localStorage.getItem("id"),
+    role: localStorage.getItem("role"),
   });
 
   return (
@@ -50,15 +52,22 @@ function useUserDispatch() {
 export { UserProvider, useUserState, useUserDispatch, loginUser, signOut };
 
 function loginUser(dispatch, history, response) {
-  localStorage.setItem('google_token', response.tokenId);
-  localStorage.setItem('name', response.profileObj.name);
-  localStorage.setItem('picture', response.profileObj.imageUrl);
+  localStorage.setItem('token', response.accessToken);
+  localStorage.setItem('name', response.username);
+  localStorage.setItem('email', response.email);
+  localStorage.setItem('id', response.id);
+  localStorage.setItem('role', response.roles[0]);
+
   dispatch({ type: 'LOGIN_SUCCESS' });
   history.push('/');
 }
 
 function signOut(dispatch, history) {
-  localStorage.removeItem('google_token');
+  localStorage.removeItem('token');
+  localStorage.removeItem('role');
+  localStorage.removeItem('name');
+  localStorage.removeItem('email');
+  localStorage.removeItem('id');
   dispatch({ type: "SIGN_OUT_SUCCESS" });
   history.push("/auth/");
 }

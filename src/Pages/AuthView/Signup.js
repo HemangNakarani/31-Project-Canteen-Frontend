@@ -1,98 +1,164 @@
-import React, { useEffect } from "react";
-import GoogleLogin from 'react-google-login';
-import { useHistory } from 'react-router-dom';
-import { useUserDispatch, loginUser } from '../../Context/UserContext';
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import "./Login.css";
+import { SignUp } from "../../APIs/AuthenticationCalls";
+import {
+  TextField,
+  Card,
+  makeStyles,
+  Typography,
+  Snackbar,
+} from "@material-ui/core";
+import MuiAlert from "@material-ui/lab/Alert";
 
-const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID || "";
+const useStyles = makeStyles((theme) => ({
+  divider: {
+    marginTop: 8,
+    "&:hover, &:focus": {
+      color: theme.palette.secondary.main,
+    },
+  },
+  card: {
+    margin: "4em",
+    paddingTop: "2em",
+    paddingBottom: "2em",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  text: {
+    margin: "0.6em",
+  },
+}));
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 function SignupPage(props) {
-    var userDispatch = useUserDispatch();
 
-    useEffect(() => {
+  const [details, setDetails] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
 
-    })
-    const history = useHistory();
+  const [open, setAlertOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
-    return <>
+  const handleErrorOpen = () => {
+    setAlertOpen(true);
+  };
 
-        <div class="container">
-            <div class="forms-container">
-                <div class="signin-signup">
-                    <form action="#" class="sign-in-form">
-                        <h2 class="register-title">Sign up</h2>
-                        <div class="input-field">
-                            <i class="fas fa-user"></i>
-                            <input type="text" placeholder="Firstname" />
-                        </div>
-                        <div class="input-field">
-                            <i class="fas fa-user"></i>
-                            <input type="text" placeholder="Lastname" />
-                        </div>
-                        <div class="input-field">
-                            <i class="fas fa-user"></i>
-                            <input type="email" placeholder="Email" />
-                        </div>
-                        <div class="input-field">
-                            <i class="fas fa-lock"></i>
-                            <input type="password" placeholder="Password" />
-                        </div>
+  const handleErrorClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
 
-                        <input type="submit" value="Sign up" class="btn solid" />
-                        <p>Or</p>
-                        <GoogleLogin
-                            clientId={GOOGLE_CLIENT_ID}
-                            buttonText="Sign In with Google"
-                            hostedDomain="daiict.ac.in"
-                            onSuccess={(response) => {
-                                loginUser(userDispatch, props.history, response);
-                            }}
-                            onFailure={console.log}
-                        />
-                    </form>
+    setAlertOpen(false);
+  };
 
-                    <form action="#" class="sign-up-form">
-                        <h2 class="title">Sign up</h2>
-                        <div class="input-field">
-                            <i class="fas fa-user"></i>
-                            <input type="text" placeholder="Username" />
-                        </div>
-                        <div class="input-field">
-                            <i class="fas fa-envelope"></i>
-                            <input type="email" placeholder="Email" />
-                        </div>
-                        <div class="input-field">
-                            <i class="fas fa-lock"></i>
-                            <input type="password" placeholder="Password" />
-                        </div>
-                        <input type="submit" class="btn" value="Sign up" />
-                    </form>
-                </div>
-            </div>
+  function doSignUp() {
+    SignUp(details.username, details.email, details.password)
+      .then((data) => {
+        history.push("/auth/login");
+      })
+      .catch((err) => {
+        setErrorMessage(err.response.data.message);
+        handleErrorOpen();
+      });
+  }
 
-            <div class="panels-container">
+  const history = useHistory();
+  const classes = useStyles();
 
-                <div class="panel left-panel">
+  return (
+    <>
+      <div class="container">
+        <div class="forms-container">
+          <div class="signin-signup">
+            <Card elevation={5} className={classes.card}>
+              <Typography variant="h4" className={classes.text}>
+                SignUp
+              </Typography>
+              <TextField
+                color="secondary"
+                className={classes.text}
+                label="Username"
+                name="username"
+                onChange={(e) => {
+                  setDetails({ ...details, username: e.target.value });
+                }}
+                required
+                value={details.username}
+                variant="outlined"
+              />
+              <TextField
+                color="secondary"
+                className={classes.text}
+                label="Email"
+                name="email"
+                onChange={(e) => {
+                  setDetails({ ...details, email: e.target.value });
+                }}
+                required
+                value={details.email}
+                variant="outlined"
+              />
+              <TextField
+                color="secondary"
+                className={classes.text}
+                label="Password"
+                name="password"
+                onChange={(e) => {
+                  setDetails({ ...details, password: e.target.value });
+                }}
+                required
+                value={details.password}
+                variant="outlined"
+              />
 
-                    <div class="content">
-                        <h2>Welcome to <span style={{ color: 'red' }}>M</span>cDA's!</h2>
-                        
-                        <p>Login Here </p>
-
-                        <button class="btn transparent" onClick={() => {
-                            history.push('/auth/login');
-                        }} id="sign-up-btn" >
-                            Login
-                        </button>
-                    </div>
-
-                </div>
-                
-            </div>
+              <button class="btn solid" onClick={() => doSignUp()}>
+                Sign Up
+              </button>
+            </Card>
+            <Snackbar
+              open={open}
+              autoHideDuration={6000}
+              onClose={handleErrorClose}
+            >
+              <Alert onClose={handleErrorClose} severity="error">
+                {errorMessage}
+              </Alert>
+            </Snackbar>
+          </div>
         </div>
 
+        <div className="panels-container">
+          <div class="panel left-panel">
+            <div class="content">
+              <h2>
+                Welcome to <span style={{ color: "red" }}>M</span>cDA's!
+              </h2>
 
+              <p>Login Here </p>
+
+              <button
+                class="btn transparent"
+                onClick={() => {
+                  history.push("/auth/login");
+                }}
+                id="sign-up-btn"
+              >
+                Login
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </>
+  );
 }
 
 export default SignupPage;
