@@ -8,7 +8,7 @@ import {useUserState} from './Context/UserContext';
 
 export default function App() {
 
-  var {isAuthenticated}  = useUserState();
+  var {isAuthenticated,role}  = useUserState();
 
   const theme = createMuiTheme({
     palette: {
@@ -48,11 +48,11 @@ export default function App() {
         {...rest}
         render={props =>
           {
-            if(isAuthenticated && process.env.REACT_APP_DEV_MODE==='owner')
+            if(isAuthenticated && role==='ROLE_OWNER')
             {
               return(React.createElement(OwnerLayout, props))
             }
-            else if (isAuthenticated && process.env.REACT_APP_DEV_MODE==='user')
+            else if (isAuthenticated)
             {
               return(React.createElement(UserLayout, props))
             }
