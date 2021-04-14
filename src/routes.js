@@ -10,6 +10,7 @@ const CanteensPage = lazy(() => import('./Pages/Canteens'));
 const SettingsPage = lazy(() => import('./Pages/Settings'));
 const LiveOrdersPage = lazy(() => import('./Pages/LiveOrders'));
 const OwnerDashboardPage = lazy(() => import('./Pages/OwnerDashboard'));
+const NotificationsPage = lazy(() => import('./Pages/Notifications'));
 const OwnerAccounts = lazy(() => import('./Pages/OwnerAccounts'));
 
 
@@ -60,6 +61,12 @@ var routes = [
     path: "settings",
     name: "Settings",
     component: SettingsPage,
+    layout: "/"
+  },
+  {
+    path: "notifications",
+    name: "Notifications",
+    component: NotificationsPage,
     layout: "/"
   },
   {
