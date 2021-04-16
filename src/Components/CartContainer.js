@@ -2,6 +2,7 @@ import React, { Fragment } from 'react'
 import CartItem from './CartItem'
 import { useCartContext } from '../Context/CartContext'
 import {Button,Typography,Grid,Container,Divider,Box,makeStyles, Paper} from '@material-ui/core'
+import {sendMessage} from '../Layouts/User';
 
 const useStyles = makeStyles((theme) => ({
   divider:{
@@ -56,6 +57,11 @@ const CartContainer = () => {
           <Box p={1} flexGrow={1} >
             <Button variant="contained" color="secondary" onClick={clearCart}>
               Clear Cart
+            </Button>
+          </Box>
+          <Box p={1} flexGrow={1} >
+            <Button variant="contained" color="secondary" onClick={()=>{sendMessage("Hiii From Cart !!!")}}>
+              Checkout
             </Button>
           </Box>
           <Box p={1}>
