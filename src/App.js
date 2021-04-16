@@ -3,12 +3,12 @@ import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import UserLayout from "./Layouts/User.js";
 import OwnerLayout from "./Layouts/Owner.js";
 import AuthLayout from "./Layouts/Auth.js";
-import { createMuiTheme,ThemeProvider } from '@material-ui/core/styles';
-import {useUserState} from './Context/UserContext';
+import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
+import { useUserState } from "./Context/UserContext";
+import { SocketContextProvider } from "./Context/SocketContext";
 
 export default function App() {
-
-  var {isAuthenticated,role}  = useUserState();
+  var { isAuthenticated, role } = useUserState();
 
   const theme = createMuiTheme({
     palette: {
@@ -18,50 +18,40 @@ export default function App() {
       },
       secondary: {
         // This is green.A700 as hex.
-        main: '#0e041c',
+        main: "#0e041c",
       },
     },
-    typography:{
-      fontFamily: [
-        'Poppins',
-        'sans-serif',
-      ].join(','),
-    }
+    typography: {
+      fontFamily: ["Poppins", "sans-serif"].join(","),
+    },
   });
 
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>
         <Switch>
-          <PrivateRoute path="/"/>
+          <SocketContextProvider>
+            <PrivateRoute path="/" />
+          </SocketContextProvider>
           <PublicRoute path="/auth" component={AuthLayout} />
         </Switch>
       </BrowserRouter>
     </ThemeProvider>
-    
   );
 
-
-  function PrivateRoute({...rest}) {
+  function PrivateRoute({ ...rest }) {
     return (
       <Route
         {...rest}
-        render={props =>
-          {
-            if(isAuthenticated && role==='ROLE_OWNER')
-            {
-              return(React.createElement(OwnerLayout, props))
-            }
-            else if (isAuthenticated)
-            {
-              return(React.createElement(UserLayout, props))
-            }
-            else
-            {
-              return(<AuthLayout {...props} />)  
-            }
+        render={(props) => {
+          if (isAuthenticated && role === "ROLE_OWNER") {
+            return React.createElement(OwnerLayout, props);
+          } else if (isAuthenticated) {
+            return React.createElement(UserLayout, props);
+          } else {
+            return <AuthLayout {...props} />;
           }
-        }
+        }}
       />
     );
   }
@@ -70,7 +60,7 @@ export default function App() {
     return (
       <Route
         {...rest}
-        render={props =>
+        render={(props) =>
           isAuthenticated ? (
             <Redirect
               to={{
@@ -84,6 +74,4 @@ export default function App() {
       />
     );
   }
-
 }
-
