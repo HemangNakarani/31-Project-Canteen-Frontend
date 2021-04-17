@@ -24,7 +24,7 @@ import FastfoodIcon from "@material-ui/icons/Fastfood";
 import RestaurantMenuIcon from "@material-ui/icons/RestaurantMenu";
 import SettingsIcon from "@material-ui/icons/Settings";
 import FaceIcon from "@material-ui/icons/Face";
-// import { useSocketContext } from "../Context/SocketContext";
+import {useUserDispatch,signOut} from '../Context/UserContext';
 
 const drawerWidth = 240;
 
@@ -159,8 +159,9 @@ const sendMessage = (msg) => {
 
 export { sendMessage };
 
-function User() {
+function User(props) {
   const history = useHistory();
+  const userDispatch = useUserDispatch();
 
   const onMessageReceived = ({ body: msg }) => {
     console.log(msg);
@@ -185,13 +186,21 @@ function User() {
           onMessageReceived
         );
       },
-      (error) => {
-        console.log(error);
+      (err) => {
+
+        if(err.headers!==undefined)
+        {
+          if(err.headers["message"]==="Failed to send message to ExecutorSubscribableChannel[clientInboundChannel]; nested exception is java.lang.SecurityException\\c INVALID TOKEN")
+          {
+            signOut(userDispatch, props.history);
+          }
+        }
+        
       }
     );
   };
 
-  useEffect(connect, []);
+  useEffect(connect, [props.history,userDispatch]);
 
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
