@@ -1,8 +1,8 @@
-name: Canteenia Continuous Integration Tests
+name: Canteenia Tests
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, dev-hemang ]
   pull_request:
     branches: [ master ]
 
