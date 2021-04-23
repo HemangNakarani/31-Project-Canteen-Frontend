@@ -24,7 +24,7 @@ import FastfoodIcon from "@material-ui/icons/Fastfood";
 import RestaurantMenuIcon from "@material-ui/icons/RestaurantMenu";
 import SettingsIcon from "@material-ui/icons/Settings";
 import FaceIcon from "@material-ui/icons/Face";
-import {useUserDispatch,signOut} from '../Context/UserContext';
+import {useUserDispatch,signOut,useUserState} from '../Context/UserContext';
 
 const drawerWidth = 240;
 
@@ -146,11 +146,11 @@ const useStyles = makeStyles((theme) => ({
 const SERVER_URL = process.env.REACT_APP_SERVER_URI || "http://localhost:8080";
 var stompClient = null;
 
-const sendMessage = (msg) => {
+const sendMessage = (msg,username) => {
   if (msg.trim() !== "") {
     const message = {
       userid: "18",
-      username: "hemmmang",
+      username: username,
       message: msg,
     };
     stompClient.send("/app/chat", {}, JSON.stringify(message));
@@ -162,6 +162,7 @@ export { sendMessage };
 function User(props) {
   const history = useHistory();
   const userDispatch = useUserDispatch();
+  const {name}  = useUserState();
 
   const onMessageReceived = ({ body: msg }) => {
     console.log(msg);
@@ -182,7 +183,7 @@ function User(props) {
       { "X-Authorization": "Bearer " + localStorage.getItem("token") },
       () => {
         stompClient.subscribe(
-          "/user/hemmmang/queue/messages",
+          `/user/${name}/queue/messages`,
           onMessageReceived
         );
       },
@@ -200,7 +201,7 @@ function User(props) {
     );
   };
 
-  useEffect(connect, [props.history,userDispatch]);
+  useEffect(connect, [props.history,userDispatch,name]);
 
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {

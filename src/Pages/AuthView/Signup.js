@@ -75,9 +75,9 @@ function SignupPage(props) {
 
   return (
     <>
-      <div class="container">
-        <div class="forms-container">
-          <div class="signin-signup">
+      <div className="container">
+        <div className="forms-container">
+          <div className="signin-signup">
             <Card elevation={5} className={classes.card}>
               <Typography variant="h4" className={classes.text}>
                 SignUp
@@ -119,7 +119,7 @@ function SignupPage(props) {
                 variant="outlined"
               />
 
-              <button class="btn solid" onClick={() => doSignUp()}>
+              <button className="btn solid" onClick={() => doSignUp()}>
                 Sign Up
               </button>
             </Card>
@@ -136,8 +136,8 @@ function SignupPage(props) {
         </div>
 
         <div className="panels-container">
-          <div class="panel left-panel">
-            <div class="content">
+          <div className="panel left-panel">
+            <div className="content">
               <h2>
                 Welcome to <span style={{ color: "red" }}>M</span>cDA's!
               </h2>
@@ -145,7 +145,7 @@ function SignupPage(props) {
               <p>Login Here </p>
 
               <button
-                class="btn transparent"
+                className="btn transparent"
                 onClick={() => {
                   history.push("/auth/login");
                 }}
