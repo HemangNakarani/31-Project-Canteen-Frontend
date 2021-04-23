@@ -20,7 +20,7 @@ A Canteen Automation project targeted to mainly DAIICT Canteens :)
   - NPM
   - Java JDK
 
-- Run Following Commands
+# Run Following Commands
   ## If working in Frontend then do following, make sure node is installed in your machine
   ```
   git clone https://github.com/HemangNakarani/31-Project-Canteen-Frontend.git
