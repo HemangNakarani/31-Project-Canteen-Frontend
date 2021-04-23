@@ -78,9 +78,9 @@ function Login(props) {
 
   return (
     <>
-      <div class="container">
-        <div class="forms-container">
-          <div class="signin-signup">
+      <div className="container">
+        <div className="forms-container">
+          <div className="signin-signup">
             <Card elevation={5} className={classes.card}>
               <Typography variant="h4" className={classes.text}>
                 Log In
@@ -110,7 +110,7 @@ function Login(props) {
                 variant="outlined"
               />
 
-              <button class="btn solid" onClick={() => doLogIn()}>
+              <button className="btn solid" onClick={() => doLogIn()}>
                 Log In
               </button>
             </Card>
@@ -126,16 +126,16 @@ function Login(props) {
           </div>
         </div>
 
-        <div class="panels-container">
-          <div class="panel left-panel">
-            <div class="content">
+        <div className="panels-container">
+          <div className="panel left-panel">
+            <div className="content">
               <h2>
                 Welcome to <span style={{ color: "red" }}>M</span>cDA's!
               </h2>
               <h3>Are you New here ?</h3>
               <p>You don't have account then sign up in just minutes.</p>
               <button
-                class="btn transparent"
+                className="btn transparent"
                 onClick={() => {
                   history.push("/auth/signup");
                 }}
