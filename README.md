@@ -9,7 +9,7 @@ A Canteen Automation project targeted to mainly DAIICT Canteens :)
 - AWS Relational Database System : PostgreSQL
 - AWS CodePipeline : CI-CD
 - AWS ElasticBeanStalk : Deployment Backend
-- Netlify : Deployment Frontend
+- Vercel : Deployment Frontend
 
 # How to contribute ?
 - Install the tools 
@@ -17,7 +17,7 @@ A Canteen Automation project targeted to mainly DAIICT Canteens :)
   - IntelliJ IDEA
   - PostgreSQL/PgAdmin
   - Postman
-  - Yarn
+  - NPM
   - Java JDK
 
 - Run Following Commands
