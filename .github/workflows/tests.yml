@@ -1,6 +1,3 @@
-#Refer this article to know more about CI using github actions
-#https://www.freecodecamp.org/news/what-are-github-actions-and-how-can-you-automate-tests-and-slack-notifications
-
 name: Canteenia Continuous Integration Tests
 
 on:
