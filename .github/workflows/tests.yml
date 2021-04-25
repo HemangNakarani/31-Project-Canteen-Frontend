@@ -2,7 +2,7 @@ name: Canteenia Tests
 
 on:
   push:
-    branches: [ main, dev-hemang ]
+    branches: [ main ]
   pull_request:
     branches: [ main ]
 
