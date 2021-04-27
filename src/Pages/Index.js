@@ -1,6 +1,5 @@
 import React from "react";
 import FoodItem from "../Components/FoodItem";
-import CurrentOrder from "../Components/CurrentOrder";
 import {
   Grid,
   Typography,
@@ -9,10 +8,11 @@ import {
   Box,
   Fab,
   CssBaseline,
-  useMediaQuery,
+  // useMediaQuery,
 } from "@material-ui/core";
 import { ShoppingCart } from "@material-ui/icons";
 import { useHistory } from "react-router-dom";
+import Orders from "../Components/Orders";
 
 const useStyles = makeStyles((theme) => ({
   divider: {
@@ -22,15 +22,17 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   gridcont: {
-    marginTop: 36,
+    marginTop: 24,
+  },
+  gridorders: {
+    padding: 24,
   },
 }));
 
 function IndexPage() {
-  
   const classes = useStyles();
   const history = useHistory();
-  const matches = useMediaQuery((theme) => theme.breakpoints.up("md"));
+  //const matches = useMediaQuery((theme) => theme.breakpoints.up("md"));
 
   return (
     <>
@@ -52,10 +54,13 @@ function IndexPage() {
             <ShoppingCart />
           </Fab>
         </Box>
+        <Box p={1}>
+          <Orders />
+        </Box>
       </Box>
       <Divider className={classes.divider} variant="fullWidth" />
-      <Grid container direction="row" spacing={2} className={classes.gridcont}>
-        <Grid container item direction="row" md={8}>
+      <Grid container direction="row" className={classes.gridcont}>
+        <Grid container item direction="row">
           <Grid item md={4} sm={6} xs={12}>
             <FoodItem></FoodItem>
           </Grid>
@@ -108,35 +113,6 @@ function IndexPage() {
             <FoodItem></FoodItem>
           </Grid>
         </Grid>
-        {matches ? (
-          <Grid item md={4}>
-            <Grid item md={12}>
-              <Typography variant="h5">
-                <b>Order Status...</b>
-              </Typography>
-            </Grid>
-            <Grid item md={12}>
-              <CurrentOrder></CurrentOrder>
-            </Grid>
-            <Grid item md={12}>
-              <CurrentOrder></CurrentOrder>
-            </Grid>
-            <Grid item md={12}>
-              <CurrentOrder></CurrentOrder>
-            </Grid>
-            <Grid item md={12}>
-              <CurrentOrder></CurrentOrder>
-            </Grid>
-            <Grid item md={12}>
-              <CurrentOrder></CurrentOrder>
-            </Grid>
-            <Grid item md={12}>
-              <CurrentOrder></CurrentOrder>
-            </Grid>
-          </Grid>
-        ) : (
-          <div></div>
-        )}
       </Grid>
     </>
   );

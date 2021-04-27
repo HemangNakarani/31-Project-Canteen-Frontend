@@ -1,6 +1,13 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Typography,Card,CardActionArea,CardMedia,CardContent } from "@material-ui/core";
+import {
+  Grid,
+  Typography,
+  Card,
+  CardActionArea,
+  CardMedia,
+  CardContent,
+} from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import Orders from "../../Assets/Orders.png";
 import Menu from "../../Assets/menu.webp";
@@ -51,7 +58,7 @@ export default function Dashboard(props) {
         </Grid>
 
         <Grid item xs={12} md={6}>
-        <Card
+          <Card
             className={classes.card}
             elevation={5}
             // onClick={() => history.push("/owner/food")}
@@ -75,7 +82,6 @@ export default function Dashboard(props) {
           </Card>
         </Grid>
         <Grid item xs={12}>
-          
           <Card
             className={classes.card}
             elevation={5}
@@ -93,7 +99,7 @@ export default function Dashboard(props) {
                   align="center"
                   variant="h4"
                 >
-                   Accounts
+                  Accounts
                 </Typography>
               </CardContent>
             </CardActionArea>
