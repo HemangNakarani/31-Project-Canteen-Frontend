@@ -28,7 +28,9 @@ const user = {
 };
 
 const useStyles = makeStyles(() => ({
-  root: {},
+  root: {
+    marginTop:24
+  },
   avatar: {
     height: 100,
     width: 100
@@ -81,9 +83,10 @@ const Profile = ({ className, ...rest }) => {
       <Divider />
       <CardActions>
         <Button
-          color="primary"
+          color="secondary"
           fullWidth
-          variant="text"
+          variant="contained"
+
         >
           Upload picture
         </Button>

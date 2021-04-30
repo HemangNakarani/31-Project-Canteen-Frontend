@@ -8,6 +8,7 @@ import {
   Box,
   Fab,
   CssBaseline,
+  Grow
   // useMediaQuery,
 } from "@material-ui/core";
 import { ShoppingCart } from "@material-ui/icons";
@@ -59,6 +60,7 @@ function IndexPage() {
         </Box>
       </Box>
       <Divider className={classes.divider} variant="fullWidth" />
+      <Grow in>
       <Grid container direction="row" className={classes.gridcont}>
         <Grid container item direction="row">
           <Grid item md={4} sm={6} xs={12}>
@@ -114,6 +116,7 @@ function IndexPage() {
           </Grid>
         </Grid>
       </Grid>
+      </Grow>
     </>
   );
 }

@@ -10,6 +10,7 @@ import {
   Box,
   makeStyles,
   Paper,
+  Grow
 } from "@material-ui/core";
 import { sendMessage } from "../Layouts/User";
 // import { Pay } from "../APIs/PaymentService";
@@ -60,6 +61,7 @@ const CartContainer = () => {
     <>
       <Container maxWidth="md">
         <Typography variant="h4">Your bag</Typography>
+        <Grow in>
         <Grid container>
           {cart.map((item,ikey) => {
             if (item.amount > 0) {
@@ -73,7 +75,7 @@ const CartContainer = () => {
             }
           })}
         </Grid>
-
+        </Grow>
         <Divider className={classes.divider} variant="fullWidth" />
 
         <Box display="flex">
