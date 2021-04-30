@@ -31,7 +31,9 @@ const states = [
 ];
 
 const useStyles = makeStyles(() => ({
-  root: {}
+  root: {
+    marginTop:24
+  }
 }));
 
 const ProfileDetails = ({ className, ...rest }) => {

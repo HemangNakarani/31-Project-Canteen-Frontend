@@ -10,6 +10,7 @@ import {
   IconButton,
   Slide,
   Grid,
+  Grow
 } from "@material-ui/core";
 import { OutdoorGrillRounded, Close as CloseIcon } from "@material-ui/icons";
 import CurrentOrder from "../Components/CurrentOrder";
@@ -79,6 +80,7 @@ export default function Orders({ children }) {
             </Typography>
           </Toolbar>
         </AppBar>
+        <Grow in>
         <Grid container className={classes.container}>
           <Grid item md={4} sm={6} xs={12} className={classes.order}>
             <CurrentOrder />
@@ -120,6 +122,7 @@ export default function Orders({ children }) {
             <CurrentOrder />
           </Grid>
         </Grid>
+        </Grow>
       </Dialog>
     </div>
   );

@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Dashboard from "../Components/Owners/Dashboard";
+import Dashboard from "../Components/OwnerDashboardComp";
 import {
   CssBaseline,
   AppBar,
@@ -47,7 +47,7 @@ function OwnerDashboard(props) {
       <ElevationScroll {...props}>
         <AppBar>
           <Toolbar>
-            <Typography variant="h6">PadmaKamal Canteen</Typography>
+            <Typography variant="h6">Canteenia's Management Console</Typography>
           </Toolbar>
         </AppBar>
       </ElevationScroll>

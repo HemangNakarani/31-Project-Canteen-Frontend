@@ -12,6 +12,7 @@ const LiveOrdersPage = lazy(() => import('./Pages/LiveOrders'));
 const OwnerDashboardPage = lazy(() => import('./Pages/OwnerDashboard'));
 const NotificationsPage = lazy(() => import('./Pages/Notifications'));
 const OwnerAccounts = lazy(() => import('./Pages/OwnerAccounts'));
+const FoodManage = lazy(() => import('./Pages/FoodManage'));
 
 
 var routes = [
@@ -31,6 +32,18 @@ var routes = [
     path: "/live",
     name: "Live Orders",
     component: LiveOrdersPage,
+    layout: "/owner"
+  },
+  {
+    path: "/manage",
+    name: "Canteen Food",
+    component: FoodManage,
+    layout: "/owner"
+  },
+  {
+    path: "/profile",
+    name: "Owner Profie",
+    component: ProfilePage,
     layout: "/owner"
   },
   {

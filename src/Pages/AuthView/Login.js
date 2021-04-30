@@ -66,11 +66,10 @@ function Login(props) {
   function doLogIn() {
     LogIn(details.username, details.password)
       .then(({data}) => {
-          console.log(data);
           loginUser(userDispatch,history,data);
       })
       .catch((err) => {
-        setErrorMessage(err.response.data.message);
+        setErrorMessage(err.response.data.message || "Something Went Wrong !!");
         handleErrorOpen();
       });
   }
