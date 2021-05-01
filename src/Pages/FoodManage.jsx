@@ -8,6 +8,7 @@ import {
 } from "@material-ui/core";
 
 import FoodManageItem from "../Components/FoodManageItem";
+import AddNewFoodItem from '../Components/AddNewFoodItem';
 import { useOwnerState } from "../Context/OwnerContext";
 
 const useStyles = makeStyles((theme) => ({
@@ -18,9 +19,9 @@ const useStyles = makeStyles((theme) => ({
   title: {
     margin: 16,
     padding: 8,
-    opacity:0.9,
+    opacity: 0.9,
     backgroundColor: theme.palette.secondary.main,
-    borderRadius:12
+    borderRadius: 12,
   },
 
   card: {
@@ -44,6 +45,9 @@ export default function FoodManage() {
       <Paper variant="outlined" className={classes.card}>
         <Grow in>
           <Grid container className={classes.root}>
+            <Grid item md={6} xs={12} key="Add">
+              <AddNewFoodItem/>
+            </Grid>
             {foodItems.map((item, ind) => {
               return (
                 <Grid item md={6} xs={12} key={ind}>
