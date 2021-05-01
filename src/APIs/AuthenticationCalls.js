@@ -14,4 +14,9 @@ const LogIn = (username,password)=>{
 
 }
 
-export {SignUp,LogIn};
+const ForgotPassword = (emailID)=>{
+
+    return axios.post(`${SERVER_URI}/api/auth/forget-password?email=${emailID}`,{})
+
+}
+export {SignUp,LogIn,ForgotPassword};

@@ -9,7 +9,7 @@ import {
   Snackbar,
 } from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
-import { LogIn } from "../../APIs/AuthenticationCalls";
+import { LogIn , ForgotPassword } from "../../APIs/AuthenticationCalls";
 import "./Login.css";
 
 const useStyles = makeStyles((theme) => ({
@@ -73,7 +73,16 @@ function Login(props) {
         handleErrorOpen();
       });
   }
-
+  function doForgotPassword() {
+    ForgotPassword("sjkundnani23@gmail.com")
+      .then(({data}) => {
+          console.log(data);
+      })
+      .catch((err) => {
+        setErrorMessage(err.response.data.message || "Something Went Wrong !!");
+        handleErrorOpen();
+      });
+  }
 
   return (
     <>
@@ -112,6 +121,9 @@ function Login(props) {
               <button className="btn solid" onClick={() => doLogIn()}>
                 Log In
               </button>
+              <Typography onClick={() => doForgotPassword()}>
+                Forgot Password
+              </Typography>
             </Card>
             <Snackbar
               open={open}
