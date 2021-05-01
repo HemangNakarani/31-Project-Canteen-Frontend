@@ -38,7 +38,7 @@ const ProfileDetails = ({ className, ...rest }) => {
     firstName: 'sudarshan',
     lastName: 'kundnani',
     email: '201801140@daiict.ac.in',
-    phone: '',
+    phone: '7984147708',
     state: 'gujarat',
     country: 'india'
   });
