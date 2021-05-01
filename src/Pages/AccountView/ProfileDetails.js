@@ -35,10 +35,10 @@ const useStyles = makeStyles(() => ({
 const ProfileDetails = ({ className, ...rest }) => {
   const classes = useStyles();
   const [values, setValues] = useState({
-    firstName: 'sudarshan',
-    lastName: 'kundnani',
+    firstName: 'virat',
+    lastName: 'kohli',
     email: '201801140@daiict.ac.in',
-    phone: '7984147708',
+    phone: '455785458',
     state: 'gujarat',
     country: 'india'
   });
