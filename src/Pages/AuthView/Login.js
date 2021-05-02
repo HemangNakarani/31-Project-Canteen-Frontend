@@ -7,9 +7,10 @@ import {
   makeStyles,
   Typography,
   Snackbar,
+  CircularProgress,
 } from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
-import { LogIn } from "../../APIs/AuthenticationCalls";
+import { LogIn , ForgotPassword } from "../../APIs/AuthenticationCalls";
 import "./Login.css";
 
 const useStyles = makeStyles((theme) => ({
@@ -45,6 +46,7 @@ function Login(props) {
   });
 
   const [open, setAlertOpen] = useState(false);
+  const [mailsent, setMailsent] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
   const history = useHistory();
   const classes = useStyles();
@@ -73,7 +75,17 @@ function Login(props) {
         handleErrorOpen();
       });
   }
-
+  function doForgotPassword() {
+    ForgotPassword("sjkundnani23@gmail.com")
+      .then(({data}) => {
+          console.log(data);
+          setMailsent(true)
+      })
+      .catch((err) => {
+        setErrorMessage(err.response.data.message || "Something Went Wrong !!");
+        handleErrorOpen();
+      });
+  }
 
   return (
     <>
@@ -112,6 +124,12 @@ function Login(props) {
               <button className="btn solid" onClick={() => doLogIn()}>
                 Log In
               </button>
+              {mailsent? <Typography onClick={() => {
+                doForgotPassword()
+                setMailsent(!mailsent)
+                }}> Forgot Password?
+              </Typography>: <CircularProgress/>}
+              
             </Card>
             <Snackbar
               open={open}
