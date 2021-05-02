@@ -3,7 +3,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
-
 import {
   Box,
   Fab,
@@ -81,15 +80,13 @@ function FoodManageItem({ index, item }) {
       description: update.description,
       basePrise: update.basePrise,
       available: true,
-      image_url:
-        "https://m.media-amazon.com/images/I/41nnn+i+pZL.jpg",
+      image_url: "https://m.media-amazon.com/images/I/41nnn+i+pZL.jpg",
       stars: 0,
       number_of_rating: 0,
       canteen_id: 1,
     });
 
     setOpen(false);
-
   };
 
   const [update, setUpdate] = useState({
@@ -102,7 +99,12 @@ function FoodManageItem({ index, item }) {
   return (
     <div className={classes.div}>
       <Box display="flex" flexDirection="column">
-        <Card className={classes.root} variant="elevation" elevation={3} onClick={handleClickOpen}>
+        <Card
+          className={classes.root}
+          variant="elevation"
+          elevation={3}
+          onClick={handleClickOpen}
+        >
           <CardContent className={classes.cardcontent}>
             <Box display="flex" alignItems="center" flexDirection="column">
               <Box p={1}>
@@ -130,10 +132,10 @@ function FoodManageItem({ index, item }) {
         <DialogTitle id="form-dialog-title">Add New Food</DialogTitle>
         <DialogContent>
           <DialogContentText>
-           Add Food Item to show on User Dashboard
+            Add Food Item to show on User Dashboard
           </DialogContentText>
           <Grid container direction="column" alignItems="center">
-          <Grid item>
+            <Grid item>
               <TextField
                 required
                 id="food-name"
