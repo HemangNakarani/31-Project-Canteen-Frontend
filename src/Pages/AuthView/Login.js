@@ -2,15 +2,22 @@ import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useUserDispatch, loginUser } from "../../Context/UserContext";
 import {
-  TextField,
   Card,
   makeStyles,
   Typography,
   Snackbar,
   CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  DialogContentText,
+  TextField,
+  Button,
+  Grid,
 } from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
-import { LogIn , ForgotPassword } from "../../APIs/AuthenticationCalls";
+import { LogIn, ForgotPassword } from "../../APIs/AuthenticationCalls";
 import "./Login.css";
 
 const useStyles = makeStyles((theme) => ({
@@ -39,47 +46,60 @@ function Alert(props) {
 }
 
 function Login(props) {
-
   const [details, setDetails] = useState({
     username: "",
     password: "",
   });
 
   const [open, setAlertOpen] = useState(false);
+  const [dialogopen, setDialogOpen] = React.useState(false);
   const [mailsent, setMailsent] = useState(true);
+  const [email, setEmail] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const history = useHistory();
   const classes = useStyles();
   const userDispatch = useUserDispatch();
 
-
   const handleErrorOpen = () => {
     setAlertOpen(true);
+  };
+
+  const handleDialogClickOpen = () => {
+    setDialogOpen(true);
+  };
+
+  const handleDialogClose = () => {
+    setDialogOpen(false);
+  };
+
+  const handleDialogSend = () => {
+    setMailsent(false);
+    setDialogOpen(false);
+
+    ForgotPassword(email)
+      .then(({ data }) => {
+        setErrorMessage(data);
+        handleErrorOpen();
+        setMailsent(true);
+      })
+      .catch((err) => {
+        setMailsent(true);
+        setErrorMessage(err.response.data.message || "Something Went Wrong !!");
+        handleErrorOpen();
+      });
   };
 
   const handleErrorClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
-
     setAlertOpen(false);
   };
 
   function doLogIn() {
     LogIn(details.username, details.password)
-      .then(({data}) => {
-          loginUser(userDispatch,history,data);
-      })
-      .catch((err) => {
-        setErrorMessage(err.response.data.message || "Something Went Wrong !!");
-        handleErrorOpen();
-      });
-  }
-  function doForgotPassword() {
-    ForgotPassword("sjkundnani23@gmail.com")
-      .then(({data}) => {
-          console.log(data);
-          setMailsent(true)
+      .then(({ data }) => {
+        loginUser(userDispatch, history, data);
       })
       .catch((err) => {
         setErrorMessage(err.response.data.message || "Something Went Wrong !!");
@@ -124,12 +144,13 @@ function Login(props) {
               <button className="btn solid" onClick={() => doLogIn()}>
                 Log In
               </button>
-              {mailsent? <Typography onClick={() => {
-                doForgotPassword()
-                setMailsent(!mailsent)
-                }}> Forgot Password?
-              </Typography>: <CircularProgress/>}
-              
+              {mailsent ? (
+                <Typography onClick={handleDialogClickOpen}>
+                  Forgot Password?
+                </Typography>
+              ) : (
+                <CircularProgress color="secondary" />
+              )}
             </Card>
             <Snackbar
               open={open}
@@ -163,6 +184,53 @@ function Login(props) {
             </div>
           </div>
         </div>
+        <Dialog
+          open={dialogopen}
+          onClose={handleDialogClose}
+          aria-labelledby="form-dialog-title"
+        >
+          <DialogTitle id="form-dialog-title">Reset Password</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Enter Email ID to send Reset Password Mail
+            </DialogContentText>
+            <Grid
+              container
+              direction="column"
+              alignItems="center"
+              style={{ marginTop: "48px", marginBottom: "48px" }}
+            >
+              <Grid item>
+                <TextField
+                  required
+                  id="reset_email"
+                  label="Enter registered Email"
+                  variant="outlined"
+                  defaultValue={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
+                />
+              </Grid>
+            </Grid>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={handleDialogClose}
+              color="secondary"
+              variant="contained"
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleDialogSend}
+              color="secondary"
+              variant="contained"
+            >
+              Send Mail
+            </Button>
+          </DialogActions>
+        </Dialog>
       </div>
     </>
   );
