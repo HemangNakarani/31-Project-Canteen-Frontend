@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
+import validator from 'validator'
 import "./Login.css";
 import { SignUp } from "../../APIs/AuthenticationCalls";
 import {
@@ -60,18 +61,39 @@ function SignupPage(props) {
   };
 
   function doSignUp() {
-    SignUp(details.username, details.email, details.password)
-      .then((data) => {
-        history.push("/auth/login");
-      })
-      .catch((err) => {
-        setErrorMessage(err.response.data.message);
-        handleErrorOpen();
-      });
+    if (!validator.isEmail(details.email) || details.password.trim().length < 6 || details.username.trim().length === 0)
+    {
+      if(details.username.trim().length === 0)
+      {
+        setErrorMessage("Username can't be empty");
+      }
+      else if(!validator.isEmail(details.email))
+      {
+        setErrorMessage("Enter Valid E-mail");
+      }
+      else if(details.password.trim().length < 6)
+      {
+        setErrorMessage("Password must be atleast 6 characters long");
+      }
+      handleErrorOpen();
+    }
+    else
+    {
+      SignUp(details.username, details.email, details.password)
+        .then((data) => {
+          history.push("/auth/login");
+        })
+       .catch((err) => {
+          setErrorMessage(err.response.data.message || "Something went wrong !");
+          handleErrorOpen();
+        });
+    }
   }
 
   const history = useHistory();
   const classes = useStyles();
+
+  
 
   return (
     <>
@@ -90,6 +112,9 @@ function SignupPage(props) {
                 onChange={(e) => {
                   setDetails({ ...details, username: e.target.value });
                 }}
+                helperText={
+                  details.username.trim().length === 0 ? 'Enter Username' : ''
+                }
                 required
                 value={details.username}
                 variant="outlined"
@@ -102,18 +127,27 @@ function SignupPage(props) {
                 onChange={(e) => {
                   setDetails({ ...details, email: e.target.value });
                 }}
+                helperText={
+                  
+                  !validator.isEmail(details.email) ? 'Enter valid email !' : '' 
+                  
+                }
                 required
                 value={details.email}
                 variant="outlined"
               />
               <TextField
                 color="secondary"
+                type='password'
                 className={classes.text}
                 label="Password"
                 name="password"
                 onChange={(e) => {
                   setDetails({ ...details, password: e.target.value });
                 }}
+                helperText={
+                  details.password.trim().length < 6 ? 'Password length must be atleast 6' : ''
+                }
                 required
                 value={details.password}
                 variant="outlined"
