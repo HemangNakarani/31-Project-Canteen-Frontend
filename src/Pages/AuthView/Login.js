@@ -97,14 +97,29 @@ function Login(props) {
   };
 
   function doLogIn() {
-    LogIn(details.username, details.password)
-      .then(({ data }) => {
-        loginUser(userDispatch, history, data);
-      })
-      .catch((err) => {
-        setErrorMessage(err.response.data.message || "Something Went Wrong !!");
-        handleErrorOpen();
-      });
+    if (details.password.trim().length < 6 || details.username.trim().length === 0)
+    {
+      if(details.username.trim().length === 0)
+      {
+        setErrorMessage("Username can't be empty");
+      }
+      else if(details.password.trim().length < 6)
+      {
+        setErrorMessage("Password must be atleast 6 characters long");
+      }
+      handleErrorOpen();
+    }
+    else{
+      LogIn(details.username, details.password)
+        .then(({ data }) => {
+          loginUser(userDispatch, history, data);
+        })
+        .catch((err) => {
+          
+          setErrorMessage(err.response.data.message || "Something Went Wrong !!");
+          handleErrorOpen();
+        });
+    }
   }
 
   return (
@@ -124,18 +139,23 @@ function Login(props) {
                 onChange={(e) => {
                   setDetails({ ...details, username: e.target.value });
                 }}
+                
                 required
                 value={details.username}
                 variant="outlined"
               />
               <TextField
                 color="secondary"
+                type='password'
                 className={classes.text}
                 label="Password"
                 name="password"
                 onChange={(e) => {
                   setDetails({ ...details, password: e.target.value });
                 }}
+                helperText={
+                  details.password.trim().length < 6 ? 'Password length must be atleast 6' : ''
+                }
                 required
                 value={details.password}
                 variant="outlined"
