@@ -47,6 +47,12 @@ export default function Liveorders() {
     setPendingOrders,
     pendingordersupdated,
     setPendingOrdersUpdated,
+    cookingordersupdated,
+    setCookingOrders,
+    setCookingOrdersUpdated,
+    completedordersupdated,
+    setCompletedOrders,
+    setCompletedOrdersUpdated
   } = useOwnerState();
 
   useEffect(() => {
@@ -55,6 +61,32 @@ export default function Liveorders() {
         .then(({ data }) => {
           setPendingOrders(data);
           setPendingOrdersUpdated();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  },[]);
+
+  useEffect(() => {
+    if (!cookingordersupdated) {
+      getOrderByStatus("Cooking")
+        .then(({ data }) => {
+          setCookingOrders(data);
+          setCookingOrdersUpdated();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  },[]);
+
+  useEffect(() => {
+    if (!completedordersupdated) {
+      getOrderByStatus("Ready")
+        .then(({ data }) => {
+          setCompletedOrders(data);
+          setCompletedOrdersUpdated();
         })
         .catch((err) => {
           console.log(err);

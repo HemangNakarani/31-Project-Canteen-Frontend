@@ -1,15 +1,10 @@
-import React from "react";
-import {
-  Grid,
-  Grow,
-  Paper,
-  Typography,
-  makeStyles,
-} from "@material-ui/core";
+import React, { useEffect } from "react";
+import { Grid, Grow, Paper, Typography, makeStyles } from "@material-ui/core";
 
 import FoodManageItem from "../Components/FoodManageItem";
-import AddNewFoodItem from '../Components/AddNewFoodItem';
+import AddNewFoodItem from "../Components/AddNewFoodItem";
 import { useOwnerState } from "../Context/OwnerContext";
+import { getFoodItemsOfMyCanteen } from "../APIs/FoodManageCalls";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,7 +28,25 @@ const useStyles = makeStyles((theme) => ({
 export default function FoodManage() {
   const classes = useStyles();
 
-  const { foodItems } = useOwnerState();
+  const {
+    foodItems,
+    setMyFoodItems,
+    setMyFoodItemsUpdated,
+    myfoodItemsupdated,
+  } = useOwnerState();
+
+  useEffect(() => {
+    if (!myfoodItemsupdated) {
+      getFoodItemsOfMyCanteen()
+        .then(({ data }) => {
+          setMyFoodItemsUpdated();
+          setMyFoodItems(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, []);
 
   return (
     <>
@@ -46,7 +59,7 @@ export default function FoodManage() {
         <Grow in>
           <Grid container className={classes.root}>
             <Grid item md={6} xs={12} key="Add">
-              <AddNewFoodItem/>
+              <AddNewFoodItem />
             </Grid>
             {foodItems.map((item, ind) => {
               return (

@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import Dashboard from "../Components/OwnerDashboardComp";
 import {
   CssBaseline,
@@ -9,7 +8,10 @@ import {
   useScrollTrigger,
   Typography,
   Box,
+  Fab,
 } from "@material-ui/core";
+
+import { PowerSettingsNew, OfflineBolt } from "@material-ui/icons";
 
 function ElevationScroll(props) {
   const { children, window } = props;
@@ -27,32 +29,47 @@ function ElevationScroll(props) {
   });
 }
 
-ElevationScroll.propTypes = {
-  children: PropTypes.element.isRequired,
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
-  window: PropTypes.func,
-};
-
 function OwnerDashboard(props) {
   // const [state, setState] = useState({
   //   canteenName: "PadmaKamal Caterers",
   //   notifs: 10,
   // });
+
+  const [canteenopen, setCanteenOpen] = React.useState(true);
+
   return (
     <React.Fragment>
       <CssBaseline />
       <ElevationScroll {...props}>
         <AppBar>
           <Toolbar>
-            <Typography variant="h6">Canteenia's Management Console</Typography>
+            <Box
+              display="flex"
+              alignItems="center"
+              p={1}
+              m={1}
+              style={{ width: "100%" }}
+            >
+              <Box flexGrow={1} alignItems="center">
+                <Typography variant="h6">
+                  Canteenia's Management Console
+                </Typography>
+              </Box>
+              <Box>
+                <Fab
+                  variant="round"
+                  color="secondary"
+                  onClick={() => setCanteenOpen(!canteenopen)}
+                >
+                  {canteenopen ? <PowerSettingsNew /> : <OfflineBolt />}
+                </Fab>
+              </Box>
+            </Box>
           </Toolbar>
         </AppBar>
       </ElevationScroll>
       <Toolbar />
-      <Container>
+      <Container maxWidth="md" style={{ marginTop: 48 }}>
         <Box>
           <Dashboard notifs={10} />
         </Box>

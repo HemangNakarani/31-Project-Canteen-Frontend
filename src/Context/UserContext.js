@@ -85,11 +85,7 @@ function loginUser(dispatch, history, response) {
 }
 
 function signOut(dispatch, history) {
-  localStorage.removeItem("token");
-  localStorage.removeItem("role");
-  localStorage.removeItem("name");
-  localStorage.removeItem("email");
-  localStorage.removeItem("id");
+  localStorage.clear()
   dispatch({ type: "SIGN_OUT_SUCCESS" });
   history.push("/auth/");
 }

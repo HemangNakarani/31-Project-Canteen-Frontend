@@ -18,6 +18,7 @@ import {
 import { AddCircle, CloudUpload } from "@material-ui/icons";
 
 import { useOwnerState } from "../Context/OwnerContext";
+import { addNewFoodItemToMenu } from "../APIs/FoodManageCalls";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -63,7 +64,7 @@ function FoodManageItem({ index, item }) {
 
   const [open, setOpen] = React.useState(false);
 
-  const { AddFoodItem, foodItems } = useOwnerState();
+  const { AddFoodItem } = useOwnerState();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -74,17 +75,14 @@ function FoodManageItem({ index, item }) {
   };
 
   const handleSaveChange = () => {
-    AddFoodItem({
-      id: foodItems.length,
-      name: update.name,
-      description: update.description,
-      basePrise: update.basePrise,
-      available: true,
-      image_url: "https://m.media-amazon.com/images/I/41nnn+i+pZL.jpg",
-      stars: 0,
-      number_of_rating: 0,
-      canteen_id: 1,
-    });
+    addNewFoodItemToMenu(update)
+      .then(({ data }) => {
+        console.log(data);
+        AddFoodItem(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 
     setOpen(false);
   };
@@ -93,7 +91,7 @@ function FoodManageItem({ index, item }) {
     name: "",
     description: "",
     basePrise: "",
-    image_url: "",
+    image_url: "https://static.toiimg.com/photo/53110049.cms",
   });
 
   return (
