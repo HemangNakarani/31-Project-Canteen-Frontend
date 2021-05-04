@@ -7,12 +7,14 @@ import { Box, Fab } from "@material-ui/core";
 import { AssignmentTurnedIn } from "@material-ui/icons";
 import CancelPresentationIcon from "@material-ui/icons/CancelPresentation";
 import moment from "moment";
+import { useOwnerState } from "../Context/OwnerContext";
+import { setOrderStatus } from "../APIs/LiveOrders";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
-    overflowX:"scroll",
-    scrollbarWidth: "none"
+    overflowX: "scroll",
+    scrollbarWidth: "none",
   },
   details: {},
   content: {
@@ -33,7 +35,101 @@ const useStyles = makeStyles((theme) => ({
 export default function LiveOrderComponent({ order }) {
   const classes = useStyles();
 
-  const { cartfooditem, createdAt, undatedAt, paid, amount, quantity } = order;
+  const {
+    id,
+    cartfooditem,
+    createdAt,
+    undatedAt,
+    paid,
+    amount,
+    quantity,
+    status,
+  } = order;
+
+  const {
+    transferPendingtoCooking,
+    transferCookingToCompleted,
+    transferCompletedToFullFilled,
+  } = useOwnerState();
+
+  const handleTransferFromPendingToCooking = () => {
+    setOrderStatus(id, "Cooking")
+      .then(({ data }) => {
+        transferPendingtoCooking(id);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleTansferFromCookingToReady = () => {
+    setOrderStatus(id, "Ready")
+      .then(({ data }) => {
+        transferCookingToCompleted(id);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handlePickedUp = () => {
+    setOrderStatus(id, "FullFilled")
+      .then(({ data }) => {
+        transferCompletedToFullFilled(id);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  function setUpdateOrderButton(status) {
+    switch (status) {
+      case "Pending": {
+        return (
+          <Fab
+            variant="extended"
+            color="secondary"
+            className={classes.fab}
+            onClick={handleTransferFromPendingToCooking}
+          >
+            <AssignmentTurnedIn className={classes.icon} />
+            Accept Order
+          </Fab>
+        );
+      }
+      case "Cooking": {
+        return (
+          <Fab
+            variant="extended"
+            color="secondary"
+            className={classes.fab}
+            onClick={handleTansferFromCookingToReady}
+          >
+            <AssignmentTurnedIn className={classes.icon} />
+            Order is Ready
+          </Fab>
+        );
+      }
+
+      case "Ready": {
+        return (
+          <Fab
+            variant="extended"
+            color="secondary"
+            className={classes.fab}
+            onClick={handlePickedUp}
+          >
+            <AssignmentTurnedIn className={classes.icon} />
+            Picked Up
+          </Fab>
+        );
+      }
+
+      default: {
+        return <div></div>;
+      }
+    }
+  }
 
   moment.defaultFormat = "YYYY-MM-DD HH:mm:ss";
 
@@ -71,26 +167,25 @@ export default function LiveOrderComponent({ order }) {
               undatedAt,
               moment.defaultFormat
             ).fromNow()}`}</Typography>
-            <Typography>
-                {`Income: ₹${amount}/-`}
-            </Typography>
+            <Typography>{`Income: ₹${amount}/-`}</Typography>
           </CardContent>
         </Box>
         <Box p={1} display="flex" flexDirection="column" alignSelf="center">
-          <Box>
-            <Fab variant="extended" color="secondary" className={classes.fab}>
-              <AssignmentTurnedIn className={classes.icon} />
-              Accept Order
-            </Fab>
-          </Box>
-          <Box>
-            <Fab variant="extended" className={classes.fab}>
-              <CancelPresentationIcon className={classes.icon} />
-              Reject Order
-            </Fab>
-          </Box>
+          <Box>{setUpdateOrderButton(status)}</Box>
+
+          {status === "Pending" ? (
+            <Box>
+              <Fab variant="extended" className={classes.fab}>
+                <CancelPresentationIcon className={classes.icon} />
+                Reject Order
+              </Fab>
+            </Box>
+          ) : (
+            <div />
+          )}
+
           <Box alignSelf="center">
-            <Fab variant="extended" size="small" className={classes.fab} >
+            <Fab variant="extended" size="small" className={classes.fab}>
               {`Paid: ${paid ? "YES" : "NO"}`}
             </Fab>
           </Box>

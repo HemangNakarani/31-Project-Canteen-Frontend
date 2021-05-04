@@ -8,6 +8,7 @@ const initialState = {
   pendingorders: [],
   cookingorders: [],
   completedorders: [],
+  myfoodItemsupdated:false,
   pendingordersupdated: false,
   cookingordersupdated: false,
   completedordersupdated: false,
@@ -26,6 +27,10 @@ function ownerReducer(state, action) {
       return { ...state, foodItems: [...state.foodItems, action.payload] };
     }
 
+    case "SET_ALL_MYFOODITEMS": {
+      return { ...state, foodItems: action.payload };
+    }
+
     case "SET_PENDING_ORDERS": {
       return { ...state, pendingorders: action.payload };
     }
@@ -41,8 +46,60 @@ function ownerReducer(state, action) {
       return { ...state, cookingorders: action.payload };
     }
 
+    case "PENDING_TO_COOKING": {
+      let tempOrder;
+
+      let temporderList = state.pendingorders
+        .map((order) => {
+          if (order.id === action.payload) {
+            tempOrder = order;
+          }
+          return order;
+        })
+        .filter((porder) => porder.id !== action.payload);
+
+      tempOrder["status"] = "Cooking";
+
+      return {
+        ...state,
+        pendingorders: temporderList,
+        cookingorders: [...state.cookingorders, tempOrder],
+      };
+    }
+
     case "SET_COMPLETED_ORDERS": {
       return { ...state, completedorders: action.payload };
+    }
+
+    case "COOKING_TO_READY": {
+      let tempOrder;
+      let temporderList = state.cookingorders
+        .map((order) => {
+          if (order.id === action.payload) {
+            tempOrder = order;
+          }
+          return order;
+        })
+        .filter((porder) => porder.id !== action.payload);
+
+      tempOrder["status"] = "Ready";
+
+      return {
+        ...state,
+        cookingorders: temporderList,
+        completedorders: [...state.completedorders, tempOrder],
+      };
+    }
+
+    case "READY_TO_FULLFILLED": {
+      return {
+        ...state,
+        completedorders: state.completedorders.filter((porder) => porder.id !== action.payload),
+      };
+    }
+
+    case "SET_MYFOODITEMS_UPDATED": {
+      return { ...state, myfoodItemsupdated: true };
     }
 
     case "SET_PENDING_ORDER_UPDATED": {
@@ -74,6 +131,10 @@ function OwnerProvider({ children }) {
     dispatch({ type: "ADD_FOODITEM", payload: item });
   };
 
+  const setMyFoodItems = (foodlist) => {
+    dispatch({ type: "SET_ALL_MYFOODITEMS", payload: foodlist });
+  };
+
   const setPendingOrders = (orderslist) => {
     dispatch({ type: "SET_PENDING_ORDERS", payload: orderslist });
   };
@@ -88,6 +149,22 @@ function OwnerProvider({ children }) {
 
   const addOrderToPendingList = (orderitem) => {
     dispatch({ type: "ADD_PENDING_ORDER", payload: orderitem });
+  };
+
+  const transferPendingtoCooking = (id) => {
+    dispatch({ type: "PENDING_TO_COOKING", payload: id });
+  };
+
+  const transferCookingToCompleted = (orderitem) => {
+    dispatch({ type: "COOKING_TO_READY", payload: orderitem });
+  };
+
+  const transferCompletedToFullFilled = (orderitem) => {
+    dispatch({ type: "READY_TO_FULLFILLED", payload: orderitem });
+  };
+
+  const setMyFoodItemsUpdated = () => {
+    dispatch({ type: "SET_MYFOODITEMS_UPDATED" });
   };
 
   const setPendingOrdersUpdated = () => {
@@ -110,11 +187,16 @@ function OwnerProvider({ children }) {
         AddFoodItem,
         setPendingOrders,
         addOrderToPendingList,
+        transferPendingtoCooking,
+        transferCookingToCompleted,
+        transferCompletedToFullFilled,
         setCookingOrders,
         setCompletedOrders,
         setCompletedOrdersUpdated,
         setCookingOrdersUpdated,
-        setPendingOrdersUpdated
+        setPendingOrdersUpdated,
+        setMyFoodItems,
+        setMyFoodItemsUpdated
       }}
     >
       <OwnerDispatchContext.Provider value={dispatch}>

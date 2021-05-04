@@ -20,6 +20,10 @@ import {
 import { CheckCircle, Settings, CloudUpload, Cancel } from "@material-ui/icons";
 
 import { useOwnerState } from "../Context/OwnerContext";
+import {
+  updateFoodItemToMenu,
+  setFoodItemAvailibility,
+} from "../APIs/FoodManageCalls";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -78,7 +82,7 @@ function FoodManageItem({ index, item }) {
 
   const [open, setOpen] = React.useState(false);
 
-  const [avilable,setAvailale] = React.useState(item.available);
+  const [avilable, setAvailale] = React.useState(item.available);
 
   const { UpdateFoodItem } = useOwnerState();
 
@@ -91,19 +95,31 @@ function FoodManageItem({ index, item }) {
   };
 
   const handleSaveChange = () => {
-    UpdateFoodItem(index, {
-      ...item,
-      description: update.description,
-      basePrise: update.basePrise,
-      image_url: update.image_url,
-    });
+    updateFoodItemToMenu(update)
+      .then(({ data }) => {
+        UpdateFoodItem(index, data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
     setOpen(false);
   };
 
+  const handleAvailibility = () => {
+    setFoodItemAvailibility(item.id, !avilable)
+      .then(({ data }) => {
+        setAvailale(!avilable);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const [update, setUpdate] = useState({
+    id: item.id,
     description: item.description,
     basePrise: item.basePrise,
-    image_url: item.image_url,
   });
 
   return (
@@ -145,16 +161,35 @@ function FoodManageItem({ index, item }) {
               </Fab>
             </Box>
             <Box p={1}>
-              {avilable ? <Tooltip title="Your Item is Avilable, click to hide it" aria-label="Available">
-                <Fab color="secondary" justify="flex-end" size="medium" onClick={()=>setAvailale(!avilable)}>
-                  <Cancel/>
-                </Fab>
-              </Tooltip>:
-              <Tooltip title="Your Item is Hidden to user, click to available it" aria-label="Unavailable">
-                <Fab color="secondary" justify="flex-end" size="medium" onClick={()=>setAvailale(!avilable)}>
-                  <CheckCircle/>
-                </Fab>
-              </Tooltip>}
+              {avilable ? (
+                <Tooltip
+                  title="Your Item is Avilable, click to hide it"
+                  aria-label="Available"
+                >
+                  <Fab
+                    color="secondary"
+                    justify="flex-end"
+                    size="medium"
+                    onClick={handleAvailibility}
+                  >
+                    <Cancel />
+                  </Fab>
+                </Tooltip>
+              ) : (
+                <Tooltip
+                  title="Your Item is Hidden to user, click to available it"
+                  aria-label="Unavailable"
+                >
+                  <Fab
+                    color="secondary"
+                    justify="flex-end"
+                    size="medium"
+                    onClick={handleAvailibility}
+                  >
+                    <CheckCircle />
+                  </Fab>
+                </Tooltip>
+              )}
             </Box>
           </Box>
         </Card>
