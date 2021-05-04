@@ -24,7 +24,9 @@ import FastfoodIcon from "@material-ui/icons/Fastfood";
 import RestaurantMenuIcon from "@material-ui/icons/RestaurantMenu";
 import SettingsIcon from "@material-ui/icons/Settings";
 import FaceIcon from "@material-ui/icons/Face";
-import {useUserDispatch,signOut,useUserState} from '../Context/UserContext';
+import { useUserDispatch, signOut, useUserState } from "../Context/UserContext";
+import { UserFoodProvider, useUserFoodState } from "../Context/UserFoodContext";
+import { checkOutTheCart } from "../APIs/CartApiCalls";
 
 const drawerWidth = 240;
 
@@ -146,7 +148,7 @@ const useStyles = makeStyles((theme) => ({
 const SERVER_URL = process.env.REACT_APP_SERVER_URI || "http://localhost:8080";
 var stompClient = null;
 
-const sendMessage = (msg,username) => {
+const sendMessageOwner = (msg, username) => {
   if (msg.trim() !== "") {
     const message = {
       userid: "18",
@@ -157,15 +159,42 @@ const sendMessage = (msg,username) => {
   }
 };
 
-export { sendMessage };
+export { sendMessageOwner };
 
-function User(props) {
+function User() {
+  return (
+    <UserFoodProvider>
+      <NotUser />
+    </UserFoodProvider>
+  );
+}
+
+function NotUser(props) {
   const history = useHistory();
   const userDispatch = useUserDispatch();
-  const {name}  = useUserState();
+  const { name } = useUserState();
+  const { ClearCart, UpdateCurrentOrders } = useUserFoodState();
+
+  const handleCheckout = (uuid) => {
+    checkOutTheCart(uuid)
+      .then(({ data }) => {
+        UpdateCurrentOrders(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const onMessageReceived = ({ body: msg }) => {
-    console.log(msg);
+    let originalmessage = JSON.parse(msg);
+
+    if (
+      originalmessage.tag === "PAYMENT" &&
+      originalmessage.message === "Payment Successful"
+    ) {
+      ClearCart();
+      handleCheckout(originalmessage.userid);
+    }
   };
 
   const connect = () => {
@@ -188,20 +217,19 @@ function User(props) {
         );
       },
       (err) => {
-
-        if(err.headers!==undefined)
-        {
-          if(err.headers["message"]==="Failed to send message to ExecutorSubscribableChannel[clientInboundChannel]; nested exception is java.lang.SecurityException\\c INVALID TOKEN")
-          {
+        if (err.headers !== undefined) {
+          if (
+            err.headers["message"] ===
+            "Failed to send message to ExecutorSubscribableChannel[clientInboundChannel]; nested exception is java.lang.SecurityException\\c INVALID TOKEN"
+          ) {
             signOut(userDispatch, props.history);
           }
         }
-        
       }
     );
   };
 
-  useEffect(connect, [props.history,userDispatch,name]);
+  useEffect(connect, [props.history, userDispatch, name]);
 
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {

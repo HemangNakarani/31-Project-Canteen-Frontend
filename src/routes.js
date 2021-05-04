@@ -13,6 +13,7 @@ const OwnerDashboardPage = lazy(() => import('./Pages/OwnerDashboard'));
 const NotificationsPage = lazy(() => import('./Pages/Notifications'));
 const OwnerAccounts = lazy(() => import('./Pages/OwnerAccounts'));
 const FoodManage = lazy(() => import('./Pages/FoodManage'));
+const FoodManageFromCanteen = lazy(() => import('./Pages/FoodFromCanteen'));
 
 
 var routes = [
@@ -62,6 +63,12 @@ var routes = [
     path: "cart",
     name: "Cart",
     component: CartPage,
+    layout: "/"
+  },
+  {
+    path: "canteens/:id",
+    name: "Food From Canteens",
+    component: FoodManageFromCanteen,
     layout: "/"
   },
   {

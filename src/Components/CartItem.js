@@ -1,23 +1,35 @@
-import React from 'react'
-import { useCartContext } from '../Context/CartContext'
-import {Button,Typography,Paper,makeStyles,CardContent,IconButton,
-        useTheme, Grid} from '@material-ui/core'
-import {AddCircleOutlineRounded,RemoveCircleOutlineRounded} from "@material-ui/icons"
+import React from "react";
+import {
+  Button,
+  Typography,
+  Paper,
+  makeStyles,
+  CardContent,
+  IconButton,
+  useTheme,
+  Grid,
+} from "@material-ui/core";
+import {
+  AddCircleOutlineRounded,
+  RemoveCircleOutlineRounded,
+} from "@material-ui/icons";
+import { deleteCartItem,increaseCartItemApi,decreaseCartItemApi } from "../APIs/CartApiCalls";
+import { useUserFoodState } from "../Context/UserFoodContext";
 
 const useStyles = makeStyles((theme) => ({
-  root:{
-    marginTop:16,
+  root: {
+    marginTop: 16,
   },
   content: {
-    flex: '1 0 auto',
+    flex: "1 0 auto",
   },
   cover: {
-    width:'100%',
-    padding: 16
+    width: "100%",
+    padding: 16,
   },
   controls: {
-    display: 'flex',
-    alignItems: 'center',
+    display: "flex",
+    alignItems: "center",
     paddingLeft: theme.spacing(1),
     paddingBottom: theme.spacing(1),
   },
@@ -27,46 +39,109 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CartItem = ({ id, img, title, price, amount , desc}) => {
-  const { remove, toggleAmount } = useCartContext()
-  const classes = useStyles()
-  const theme = useTheme()
+const CartItem = (props) => {
+
+  const {
+    RemoveCartItem,
+    IncreaseCartItem,
+    DecreaseCartItem,
+  } = useUserFoodState();
+
+  const { id, quantity, cartfooditem } = props;
+
+  const classes = useStyles();
+  const theme = useTheme();
+
+  const handleRemove = () => {
+    deleteCartItem(id)
+      .then(({ data }) => {
+        console.log(data);
+        RemoveCartItem(id);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleIncrease = ()=>{
+
+    increaseCartItemApi(id)
+    .then(({data})=>{
+      console.log(data);
+      IncreaseCartItem(id);
+    })
+    .catch(err=>{
+      console.log(err);
+    })
+    
+  }
+
+  const handleDecrease = ()=>{
+
+    decreaseCartItemApi(id)
+    .then(({data})=>{
+      console.log(data);
+      DecreaseCartItem(id);
+    })
+    .catch(err=>{
+      console.log(err);
+    })
+
+  }
 
   return (
     <Paper variant="outlined" className={classes.root}>
       <Grid container alignItems="center" direction="row">
-         <Grid item md={3} sm={3} xs={12}>
-            <img
-             className={classes.cover}
-              src={img}
-              title={title}
-              alt={title}
-            />
-         </Grid>
+        <Grid item md={3} sm={3} xs={12}>
+          <img
+            className={classes.cover}
+            src={cartfooditem.image_url}
+            title={cartfooditem.name}
+            alt={cartfooditem.name}
+          />
+        </Grid>
         <Grid item md={9} sm={9} xs={12}>
           <div>
             <CardContent>
               <Typography component="h5" variant="h5">
-                {title}
+                {cartfooditem.name}
               </Typography>
               <Typography variant="subtitle1" color="secondary">
-              $ {price}
+                $ {cartfooditem.basePrise}
               </Typography>
               <Typography variant="caption" color="textSecondary">
-              {desc}
+                {cartfooditem.description}
               </Typography>
             </CardContent>
             <div className={classes.controls}>
-              <IconButton aria-label="inc" onClick={() => toggleAmount(id, 'inc')}>
-                {theme.direction === 'rtl' ? <RemoveCircleOutlineRounded /> : <AddCircleOutlineRounded />}
+              <IconButton
+                aria-label="inc"
+                onClick={handleIncrease}
+              >
+                {theme.direction === "rtl" ? (
+                  <RemoveCircleOutlineRounded />
+                ) : (
+                  <AddCircleOutlineRounded />
+                )}
               </IconButton>
               <Typography variant="h5" color="textPrimary">
-              {amount}
+                {quantity}
               </Typography>
-              <IconButton aria-label="dec" onClick={() => toggleAmount(id, 'dec')}>
-                {theme.direction === 'rtl' ? <AddCircleOutlineRounded /> : <RemoveCircleOutlineRounded />}
+              <IconButton
+                aria-label="dec"
+                onClick={handleDecrease}
+              >
+                {theme.direction === "rtl" ? (
+                  <AddCircleOutlineRounded />
+                ) : (
+                  <RemoveCircleOutlineRounded />
+                )}
               </IconButton>
-              <Button variant="contained" color="primary" onClick={() => remove(id)} style={{marginLeft:"16px"}}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleRemove}
+              >
                 Remove
               </Button>
             </div>
@@ -74,7 +149,7 @@ const CartItem = ({ id, img, title, price, amount , desc}) => {
         </Grid>
       </Grid>
     </Paper>
-  )
-}
+  );
+};
 
-export default CartItem
+export default CartItem;

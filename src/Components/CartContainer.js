@@ -1,8 +1,8 @@
-import React, { Fragment } from "react";
+import React, { useEffect } from "react";
 import CartItem from "./CartItem";
-import { useCartContext } from "../Context/CartContext";
+import { useUserFoodState } from "../Context/UserFoodContext";
+
 import {
-  Button,
   Typography,
   Grid,
   Container,
@@ -10,11 +10,14 @@ import {
   Box,
   makeStyles,
   Paper,
-  Grow
+  Grow,
+  Fab,
 } from "@material-ui/core";
-import { sendMessage } from "../Layouts/User";
-// import { Pay } from "../APIs/PaymentService";
+import { Payment } from "@material-ui/icons";
 import { useUserState } from "../Context/UserContext";
+import { getAllCartItems } from "../APIs/CartApiCalls";
+import {generate_UUID} from '../Utils';
+import {Pay} from '../APIs/PaymentService';
 
 const useStyles = makeStyles((theme) => ({
   divider: {
@@ -27,76 +30,71 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const CartContainer = () => {
-  const { cart, total, clearCart, loading } = useCartContext();
+  const {
+    cartItems,
+    SetAllCartItems,
+    carttotal,
+  } = useUserFoodState();
+
   const classes = useStyles();
   const { name } = useUserState();
 
-  const handlePayment = () => {
-    // window.open(
-    //   Pay("vsdfs2d45vsgs", 500, "sfg4t5cvzxsrgwe8ni284we4rqt7dbg"),
-    //   "Payment Kr",
-    //   "height=800,width=800,modal=yes,alwaysRaised=yes"
-    // );
+  useEffect(() => {
+    if (cartItems.length === 0) {
+      getAllCartItems().then(({ data }) => {
+        console.log(data);
+        SetAllCartItems(data);
+      });
+    }
+  }, []);
 
-    sendMessage("Helllo From App !!", name);
+  const handlePayment = () => {
+    window.open(
+      Pay(name, carttotal, `${name}-${generate_UUID()}`),
+      "Payment Kr",
+      "height=800,width=800,modal=yes,alwaysRaised=yes"
+    );
   };
 
-  if (cart.length === 0) {
+  if (cartItems.length === 0) {
     return (
       <>
         <Container maxWidth="md">
           <Typography variant="h4">Your bag</Typography>
           <Typography variant="subtitle1" color="textSecondary">
-            is currently empty
+            is currently empty, Order Your Food Now
           </Typography>
         </Container>
       </>
     );
   }
-  return loading ? (
-    <Fragment>
-      <Typography>Loading...</Typography>
-    </Fragment>
-  ) : (
+  return (
     <>
       <Container maxWidth="md">
         <Typography variant="h4">Your bag</Typography>
         <Grow in>
-        <Grid container>
-          {cart.map((item,ikey) => {
-            if (item.amount > 0) {
+          <Grid container>
+            {cartItems.map((item, ikey) => {
               return (
-                <Grid key={ikey}>
-                  <CartItem  {...item} />
+                <Grid item key={ikey} md={12}>
+                  <CartItem {...item} />
                 </Grid>
               );
-            } else {
-              return <div key={ikey} />;
-            }
-          })}
-        </Grid>
+            })}
+          </Grid>
         </Grow>
         <Divider className={classes.divider} variant="fullWidth" />
 
         <Box display="flex">
           <Box p={1} flexGrow={1}>
-            <Button variant="contained" color="secondary" onClick={clearCart}>
-              Clear Cart
-            </Button>
-          </Box>
-          <Box p={1} flexGrow={1}>
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={handlePayment}
-            >
-              Checkout
-            </Button>
+            <Fab variant="extended" onClick={handlePayment} color="secondary">
+              <Payment />- Pay & Checkout
+            </Fab>
           </Box>
           <Box p={1}>
             <Paper variant="outlined" className={classes.total}>
               <Typography variant="h5">
-                Total {":>"} <span>{total}</span>
+                Total {":>"} <span>{carttotal}</span>
               </Typography>
             </Paper>
           </Box>

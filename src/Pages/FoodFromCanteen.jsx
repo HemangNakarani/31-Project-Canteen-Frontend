@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, {useEffect } from "react";
 import FoodItem from "../Components/FoodItem";
 import {
   Grid,
@@ -6,14 +6,10 @@ import {
   Divider,
   makeStyles,
   Box,
-  Fab,
   CssBaseline,
   Grow,
-  // useMediaQuery,
 } from "@material-ui/core";
-import { ShoppingCart } from "@material-ui/icons";
-import { useHistory } from "react-router-dom";
-import Orders from "../Components/Orders";
+// import { useHistory } from "react-router-dom";
 import { getAllFoodItems } from "../APIs/FoodItemsCalls";
 import { useUserFoodState } from "../Context/UserFoodContext";
 
@@ -32,9 +28,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function IndexPage() {
+function FoodFromCanteen(props) {
   const classes = useStyles();
-  const history = useHistory();
+  //   const history = useHistory();
+  const canteenId = props.match.params.id;
+
   const { foodItems, SetAllFoodItems } = useUserFoodState();
 
   useEffect(() => {
@@ -52,36 +50,22 @@ function IndexPage() {
       <CssBaseline />
       <Box display="flex" p={1} className={classes.pos}>
         <Box p={1} flexGrow={1} alignSelf="center">
-          <Typography variant="h3">
-            Welcome to <span style={{ color: "red" }}>M</span>cDA's{" "}
-            <span>🍕</span>
-          </Typography>
-        </Box>
-        <Box p={1}>
-          <Fab
-            color="secondary"
-            className={classes.fabicon}
-            justify="flex-end"
-            onClick={() => history.push("/cart")}
-          >
-            <ShoppingCart />
-          </Fab>
-        </Box>
-        <Box p={1}>
-          <Orders />
+          <Typography variant="h3">Padmakamal Canteen</Typography>
         </Box>
       </Box>
       <Divider className={classes.divider} variant="fullWidth" />
       <Grow in>
         <Grid container direction="row" className={classes.gridcont}>
           <Grid container item direction="row">
-            {foodItems.map((fooditem, index) => {
-              return (
-                <Grid key={index} item md={4} sm={6} xs={12}>
-                  <FoodItem fooditem={fooditem} />
-                </Grid>
-              );
-            })}
+            {foodItems
+              .filter((obj) => obj.canteen_id === parseInt(canteenId))
+              .map((fooditem, index) => {
+                return (
+                  <Grid key={index} item md={4} sm={6} xs={12}>
+                    <FoodItem fooditem={fooditem} />
+                  </Grid>
+                );
+              })}
           </Grid>
         </Grid>
       </Grow>
@@ -89,4 +73,4 @@ function IndexPage() {
   );
 }
 
-export default IndexPage;
+export default FoodFromCanteen;
