@@ -42,19 +42,20 @@ export default function Orders({ children }) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 
-  const { SetAllCurrentOrders, mycurrentorders } = useUserFoodState();
+  const { SetAllCurrentOrders, mycurrentorders,mycurrentordersupdated, setMyCurrentOrdersUpdated } = useUserFoodState();
 
   useEffect(() => {
-    if (mycurrentorders.length === 0) {
+    if (!mycurrentordersupdated) {
       myCurrentOrders()
         .then(({ data }) => {
+          setMyCurrentOrdersUpdated();
           SetAllCurrentOrders(data);
         })
         .catch((err) => {
           console.log(err);
         });
     }
-  });
+  },[]);
 
   const handleClickOpen = () => {
     setOpen(true);

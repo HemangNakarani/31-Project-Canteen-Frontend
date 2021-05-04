@@ -6,8 +6,11 @@ var OwnerDispatchContext = React.createContext();
 const initialState = {
   foodItems: [],
   pendingorders: [],
-  cookingorders:[],
-  completedorders:[]
+  cookingorders: [],
+  completedorders: [],
+  pendingordersupdated: false,
+  cookingordersupdated: false,
+  completedordersupdated: false,
 };
 
 function ownerReducer(state, action) {
@@ -28,7 +31,10 @@ function ownerReducer(state, action) {
     }
 
     case "ADD_PENDING_ORDER": {
-      return { ...state, pendingorders: [...state.pendingorders, action.payload] };
+      return {
+        ...state,
+        pendingorders: [...state.pendingorders, action.payload],
+      };
     }
 
     case "SET_COOKING_ORDERS": {
@@ -37,6 +43,18 @@ function ownerReducer(state, action) {
 
     case "SET_COMPLETED_ORDERS": {
       return { ...state, completedorders: action.payload };
+    }
+
+    case "SET_PENDING_ORDER_UPDATED": {
+      return { ...state, pendingordersupdated: true };
+    }
+
+    case "SET_COOKING_ORDER_UPDATED": {
+      return { ...state, cookingordersupdated: true };
+    }
+
+    case "SET_COMPLETED_ORDER_UPDATED": {
+      return { ...state, completedordersupdated: true };
     }
 
     default: {
@@ -72,6 +90,18 @@ function OwnerProvider({ children }) {
     dispatch({ type: "ADD_PENDING_ORDER", payload: orderitem });
   };
 
+  const setPendingOrdersUpdated = () => {
+    dispatch({ type: "SET_PENDING_ORDER_UPDATED" });
+  };
+
+  const setCookingOrdersUpdated = () => {
+    dispatch({ type: "SET_COOKING_ORDER_UPDATED" });
+  };
+
+  const setCompletedOrdersUpdated = () => {
+    dispatch({ type: "SET_COMPLETED_ORDER_UPDATED" });
+  };
+
   return (
     <OwnerStateContext.Provider
       value={{
@@ -81,7 +111,10 @@ function OwnerProvider({ children }) {
         setPendingOrders,
         addOrderToPendingList,
         setCookingOrders,
-        setCompletedOrders
+        setCompletedOrders,
+        setCompletedOrdersUpdated,
+        setCookingOrdersUpdated,
+        setPendingOrdersUpdated
       }}
     >
       <OwnerDispatchContext.Provider value={dispatch}>
