@@ -45,19 +45,22 @@ export default function Liveorders() {
     cookingorders,
     completedorders,
     setPendingOrders,
+    pendingordersupdated,
+    setPendingOrdersUpdated,
   } = useOwnerState();
 
   useEffect(() => {
-    if (pendingorders.length === 0) {
+    if (!pendingordersupdated) {
       getOrderByStatus("Pending")
         .then(({ data }) => {
           setPendingOrders(data);
+          setPendingOrdersUpdated();
         })
         .catch((err) => {
           console.log(err);
         });
     }
-  });
+  },[]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -120,7 +123,7 @@ export default function Liveorders() {
           </Grow>
         </TabPanel>
         <TabPanel value={value} index={2}>
-        <Grow in>
+          <Grow in>
             <Grid container className={classes.container} justify="center">
               {completedorders.map((order, index) => {
                 return (

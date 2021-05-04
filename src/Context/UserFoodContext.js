@@ -10,6 +10,10 @@ const initialState = {
   mycurrentorders:[],
   carttotal: 0,
   cartamount: 0,
+  foodItemsupdated:false,
+  canteensupdated:false,
+  cartItemsupdated:false,
+  mycurrentordersupdated:false,
 };
 
 function ownerReducer(state, action) {
@@ -93,6 +97,23 @@ function ownerReducer(state, action) {
       return { ...state, carttotal: total, cartamount: amount };
     }
 
+    case "SET_FOODITEMS_UPDATED": {
+      return { ...state, foodItemsupdated: true };
+    }
+
+    case "SET_CANTEENS_UPDATED": {
+      return { ...state, canteensupdated: true };
+    }
+
+    case "SET_CARTITEMS_UPDATED": {
+      return { ...state, cartItemsupdated: true };
+    }
+
+    case "SET_MYCURRENTORDERS_UPDATED": {
+      return { ...state, mycurrentordersupdated: true };
+    }
+
+
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
     }
@@ -142,6 +163,22 @@ function UserFoodProvider({ children }) {
     dispatch({ type: "CLEAR_CART" });
   };
 
+  const setFoodItemsUpdated = ()=>{
+    dispatch({ type: "SET_FOODITEMS_UPDATED" });
+  }
+
+  const setCanteensUpdated = ()=>{
+    dispatch({ type: "SET_CANTEENS_UPDATED" });
+  }
+
+  const setCartItemsUpdated = ()=>{
+    dispatch({ type: "SET_CARTITEMS_UPDATED" });
+  }
+
+  const setMyCurrentOrdersUpdated = ()=>{
+    dispatch({ type: "SET_MYCURRENTORDERS_UPDATED" });
+  }
+
   useEffect(() => {
     dispatch({ type: "GET_CART_TOTALS" });
   }, [state.cartItems]);
@@ -159,7 +196,11 @@ function UserFoodProvider({ children }) {
         DecreaseCartItem,
         ClearCart,
         SetAllCurrentOrders,
-        UpdateCurrentOrders
+        UpdateCurrentOrders,
+        setFoodItemsUpdated,
+        setCartItemsUpdated,
+        setCanteensUpdated,
+        setMyCurrentOrdersUpdated,
       }}
     >
       <UserFoodDispatchContext.Provider value={dispatch}>

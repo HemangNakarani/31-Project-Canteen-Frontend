@@ -5,15 +5,17 @@ import { getAllCanteens } from "../APIs/FoodItemsCalls";
 import { useUserFoodState } from "../Context/UserFoodContext";
 
 function Canteens() {
+
+  const { canteens, SetAllCanteens,canteensupdated,setCanteensUpdated } = useUserFoodState();
+
   useEffect(() => {
-    if (canteens.length === 0) {
+    if (!canteensupdated) {
       getAllCanteens().then(({ data }) => {
+        setCanteensUpdated();
         SetAllCanteens(data);
       });
     }
-  });
-
-  const { canteens, SetAllCanteens } = useUserFoodState();
+  },[]);
 
   return (
     <div className="container">

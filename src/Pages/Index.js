@@ -35,15 +35,16 @@ const useStyles = makeStyles((theme) => ({
 function IndexPage() {
   const classes = useStyles();
   const history = useHistory();
-  const { foodItems, SetAllFoodItems } = useUserFoodState();
+  const { foodItems, SetAllFoodItems, foodItemsupdated,setFoodItemsUpdated } = useUserFoodState();
 
   useEffect(() => {
-    if (foodItems.length === 0) {
+    if (!foodItemsupdated) {
       getAllFoodItems().then(({ data }) => {
+        setFoodItemsUpdated();
         SetAllFoodItems(data);
       });
     }
-  });
+  },[]);
 
   //const matches = useMediaQuery((theme) => theme.breakpoints.up("md"));
 

@@ -33,15 +33,16 @@ function FoodFromCanteen(props) {
   //   const history = useHistory();
   const canteenId = props.match.params.id;
 
-  const { foodItems, SetAllFoodItems } = useUserFoodState();
+  const { foodItems, SetAllFoodItems, foodItemsupdated, setFoodItemsUpdated } = useUserFoodState();
 
   useEffect(() => {
-    if (foodItems.length === 0) {
+    if (!foodItemsupdated) {
       getAllFoodItems().then(({ data }) => {
+        setFoodItemsUpdated()
         SetAllFoodItems(data);
       });
     }
-  });
+  },[]);
 
   //const matches = useMediaQuery((theme) => theme.breakpoints.up("md"));
 
