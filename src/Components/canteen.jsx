@@ -8,6 +8,8 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Rating from "@material-ui/lab/Rating";
+import {useHistory} from 'react-router-dom';
+
 const useStyles = makeStyles({
   root: {
     marginBottom: 10,
@@ -19,24 +21,20 @@ const useStyles = makeStyles({
 
 export default function Canteen(props) {
   const classes = useStyles();
+  const history = useHistory();
 
-  const {
-    canteenName,
-    canteenLogo,
-    canteenAltName,
-    open,
-    rating,
-    offer,
-  } = props;
-  var ImagePath = require(`../Assets/${canteenLogo}`).default;
+  const { canteenName, altName, opened, id } = props;
+  var ImagePath = require(`../Assets/burger.png`).default;
 
   return (
-    <Card className={classes.root}>
+    <Card className={classes.root} onClick={()=>{
+        history.push(`/canteens/${id}`)
+    }}>
       <CardActionArea>
         <CardMedia
           className={classes.media}
           image={ImagePath}
-          title={canteenAltName}
+          title={altName}
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
@@ -45,7 +43,7 @@ export default function Canteen(props) {
           <Typography variant="body2" color="textSecondary" component="span">
             <Rating
               name="half-rating-read"
-              defaultValue={rating}
+              defaultValue={4.2}
               precision={0.5}
               readOnly
             />
@@ -54,10 +52,10 @@ export default function Canteen(props) {
       </CardActionArea>
       <CardActions>
         <Button size="small" color="secondary">
-          {displayOpenStatus(open)}
+          {displayOpenStatus(opened)}
         </Button>
         <Button size="small" color="secondary">
-          {displayOffer(offer)}
+          {displayOffer("25% OFF")}
         </Button>
       </CardActions>
     </Card>

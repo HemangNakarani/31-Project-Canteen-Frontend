@@ -4,56 +4,10 @@ var OwnerStateContext = React.createContext();
 var OwnerDispatchContext = React.createContext();
 
 const initialState = {
-  foodItems: [
-    {
-      id: 1,
-      name: "Masala Chai",
-      description: "Garam Garam in Winter",
-      basePrise: 15,
-      available: true,
-      image_url:
-        "https://img.etimg.com/photo/msid-69212931,quality-100/chai-itself-was-once-a-trend-that-developed-this-way-.jpg",
-      stars: 0,
-      number_of_rating: 0,
-      canteen_id: 1,
-    },
-    {
-      id: 2,
-      name: "Dabeli",
-      description: "Wahh Betey Mozz krdi",
-      basePrise: 30,
-      available: false,
-      image_url:
-        "https://yummytummyrecipes.com/wp-content/uploads/2021/02/Image-of-Dabeli-min-scaled.jpg",
-      stars: 0,
-      number_of_rating: 0,
-      canteen_id: 1,
-    },
-    {
-      id: 3,
-      name: "Double Masala Chai",
-      description: "Double Garam Garam",
-      basePrise: 20,
-      available: false,
-      image_url:
-        "https://img.etimg.com/photo/msid-69212931,quality-100/chai-itself-was-once-a-trend-that-developed-this-way-.jpg",
-      stars: 0,
-      number_of_rating: 0,
-      canteen_id: 1,
-    },
-    {
-      id: 4,
-      name: "DA's Burger",
-      description: "Tam to bde heavy driver ho bhai",
-      basePrise: 60,
-      available: true,
-      image_url:
-        "https://yummytummyrecipes.com/wp-content/uploads/2021/02/Image-of-Dabeli-min-scaled.jpg",
-      stars: 0,
-      number_of_rating: 0,
-      canteen_id: 1,
-    },
-  ],
+  foodItems: [],
+  pendingorders: [],
+  cookingorders:[],
+  completedorders:[]
 };
 
 function ownerReducer(state, action) {
@@ -67,6 +21,22 @@ function ownerReducer(state, action) {
 
     case "ADD_FOODITEM": {
       return { ...state, foodItems: [...state.foodItems, action.payload] };
+    }
+
+    case "SET_PENDING_ORDERS": {
+      return { ...state, pendingorders: action.payload };
+    }
+
+    case "ADD_PENDING_ORDER": {
+      return { ...state, pendingorders: [...state.pendingorders, action.payload] };
+    }
+
+    case "SET_COOKING_ORDERS": {
+      return { ...state, cookingorders: action.payload };
+    }
+
+    case "SET_COMPLETED_ORDERS": {
+      return { ...state, completedorders: action.payload };
     }
 
     default: {
@@ -86,9 +56,33 @@ function OwnerProvider({ children }) {
     dispatch({ type: "ADD_FOODITEM", payload: item });
   };
 
+  const setPendingOrders = (orderslist) => {
+    dispatch({ type: "SET_PENDING_ORDERS", payload: orderslist });
+  };
+
+  const setCookingOrders = (orderslist) => {
+    dispatch({ type: "SET_COOKING_ORDERS", payload: orderslist });
+  };
+
+  const setCompletedOrders = (orderslist) => {
+    dispatch({ type: "SET_COMPLETED_ORDERS", payload: orderslist });
+  };
+
+  const addOrderToPendingList = (orderitem) => {
+    dispatch({ type: "ADD_PENDING_ORDER", payload: orderitem });
+  };
+
   return (
     <OwnerStateContext.Provider
-      value={{ ...state, UpdateFoodItem, AddFoodItem }}
+      value={{
+        ...state,
+        UpdateFoodItem,
+        AddFoodItem,
+        setPendingOrders,
+        addOrderToPendingList,
+        setCookingOrders,
+        setCompletedOrders
+      }}
     >
       <OwnerDispatchContext.Provider value={dispatch}>
         {children}

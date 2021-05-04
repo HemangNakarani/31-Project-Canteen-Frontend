@@ -21,4 +21,17 @@ const ForgotPassword = (emailID) => {
     {}
   );
 };
-export { SignUp, LogIn, ForgotPassword };
+
+const getCanteenDetails = () => {
+  console.log("getCanteenDetails");
+
+  const token = localStorage.getItem("token", "");
+
+  return axios.get(`${SERVER_URI}/api/auth/canteen-details`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export { SignUp, LogIn, ForgotPassword, getCanteenDetails };

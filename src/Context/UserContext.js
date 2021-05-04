@@ -1,4 +1,5 @@
 import React from "react";
+import { getCanteenDetails } from "../APIs/AuthenticationCalls";
 
 var UserStateContext = React.createContext();
 var UserDispatchContext = React.createContext();
@@ -6,7 +7,14 @@ var UserDispatchContext = React.createContext();
 function userReducer(state, action) {
   switch (action.type) {
     case "LOGIN_SUCCESS":
-      return { ...state, isAuthenticated: true, name: localStorage.name, email: localStorage.email, id:localStorage.id, role:localStorage.role};
+      return {
+        ...state,
+        isAuthenticated: true,
+        name: localStorage.name,
+        email: localStorage.email,
+        id: localStorage.id,
+        role: localStorage.role,
+      };
     case "SIGN_OUT_SUCCESS":
       return { ...state, isAuthenticated: false };
     default: {
@@ -52,22 +60,36 @@ function useUserDispatch() {
 export { UserProvider, useUserState, useUserDispatch, loginUser, signOut };
 
 function loginUser(dispatch, history, response) {
-  localStorage.setItem('token', response.accessToken);
-  localStorage.setItem('name', response.username);
-  localStorage.setItem('email', response.email);
-  localStorage.setItem('id', response.id);
-  localStorage.setItem('role', response.roles[0]);
+  localStorage.setItem("token", response.accessToken);
+  localStorage.setItem("name", response.username);
+  localStorage.setItem("email", response.email);
+  localStorage.setItem("id", response.id);
+  localStorage.setItem("role", response.roles[0]);
 
-  dispatch({ type: 'LOGIN_SUCCESS' });
-  history.push('/');
+  if (response.roles[0] === "ROLE_OWNER") {
+    getCanteenDetails()
+      .then(({ data }) => {
+        localStorage.setItem("canteenName", data.canteenName);
+        localStorage.setItem("altName", data.altName);
+        localStorage.setItem("canteen_id", data.id);
+        dispatch({ type: "LOGIN_SUCCESS" });
+        history.push("/");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  } else {
+    dispatch({ type: "LOGIN_SUCCESS" });
+    history.push("/");
+  }
 }
 
 function signOut(dispatch, history) {
-  localStorage.removeItem('token');
-  localStorage.removeItem('role');
-  localStorage.removeItem('name');
-  localStorage.removeItem('email');
-  localStorage.removeItem('id');
+  localStorage.removeItem("token");
+  localStorage.removeItem("role");
+  localStorage.removeItem("name");
+  localStorage.removeItem("email");
+  localStorage.removeItem("id");
   dispatch({ type: "SIGN_OUT_SUCCESS" });
   history.push("/auth/");
 }

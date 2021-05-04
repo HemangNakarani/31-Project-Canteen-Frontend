@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import {
   Typography,
@@ -10,10 +10,13 @@ import {
   IconButton,
   Slide,
   Grid,
-  Grow
+  Grow,
+  Container,
 } from "@material-ui/core";
 import { OutdoorGrillRounded, Close as CloseIcon } from "@material-ui/icons";
 import CurrentOrder from "../Components/CurrentOrder";
+import { myCurrentOrders } from "../APIs/CartApiCalls";
+import { useUserFoodState } from "../Context/UserFoodContext";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -28,8 +31,6 @@ const useStyles = makeStyles((theme) => ({
   },
   order: {
     paddingTop: 16,
-    paddingLeft: 8,
-    paddingRight: 8,
   },
 }));
 
@@ -40,6 +41,20 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 export default function Orders({ children }) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+
+  const { SetAllCurrentOrders, mycurrentorders } = useUserFoodState();
+
+  useEffect(() => {
+    if (mycurrentorders.length === 0) {
+      myCurrentOrders()
+        .then(({ data }) => {
+          SetAllCurrentOrders(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  });
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -81,47 +96,23 @@ export default function Orders({ children }) {
           </Toolbar>
         </AppBar>
         <Grow in>
-        <Grid container className={classes.container}>
-          <Grid item md={4} sm={6} xs={12} className={classes.order}>
-            <CurrentOrder />
-          </Grid>
-          <Grid item md={4} sm={6} xs={12} className={classes.order}>
-            <CurrentOrder />
-          </Grid>
-          <Grid item md={4} sm={6} xs={12} className={classes.order}>
-            <CurrentOrder />
-          </Grid>
-          <Grid item md={4} sm={6} xs={12} className={classes.order}>
-            <CurrentOrder />
-          </Grid>
-          <Grid item md={4} sm={6} xs={12} className={classes.order}>
-            <CurrentOrder />
-          </Grid>
-          <Grid item md={4} sm={6} xs={12} className={classes.order}>
-            <CurrentOrder />
-          </Grid>
-          <Grid item md={4} sm={6} xs={12} className={classes.order}>
-            <CurrentOrder />
-          </Grid>
-          <Grid item md={4} sm={6} xs={12} className={classes.order}>
-            <CurrentOrder />
-          </Grid>
-          <Grid item md={4} sm={6} xs={12} className={classes.order}>
-            <CurrentOrder />
-          </Grid>
-          <Grid item md={4} sm={6} xs={12} className={classes.order}>
-            <CurrentOrder />
-          </Grid>
-          <Grid item md={4} sm={6} xs={12} className={classes.order}>
-            <CurrentOrder />
-          </Grid>
-          <Grid item md={4} sm={6} xs={12} className={classes.order}>
-            <CurrentOrder />
-          </Grid>
-          <Grid item md={4} sm={6} xs={12} className={classes.order}>
-            <CurrentOrder />
-          </Grid>
-        </Grid>
+          <Container maxWidth="md">
+            <Grid container justify="center">
+              {mycurrentorders.map((ord, ind) => {
+                return (
+                  <Grid
+                    key={ind}
+                    item
+                    xs={12}
+                    md={12}
+                    className={classes.order}
+                  >
+                    <CurrentOrder order={ord} />
+                  </Grid>
+                );
+              })}
+            </Grid>
+          </Container>
         </Grow>
       </Dialog>
     </div>
