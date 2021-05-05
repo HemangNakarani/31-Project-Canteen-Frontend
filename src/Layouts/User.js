@@ -27,6 +27,7 @@ import FaceIcon from "@material-ui/icons/Face";
 import { useUserDispatch, signOut, useUserState } from "../Context/UserContext";
 import { UserFoodProvider, useUserFoodState } from "../Context/UserFoodContext";
 import { checkOutTheCart } from "../APIs/CartApiCalls";
+import { SnackbarProvider } from "notistack";
 
 const drawerWidth = 240;
 
@@ -163,9 +164,11 @@ export { sendMessageOwner };
 
 function User() {
   return (
-    <UserFoodProvider>
-      <NotUser />
-    </UserFoodProvider>
+    <SnackbarProvider maxSnack={5}>
+      <UserFoodProvider>
+        <NotUser />
+      </UserFoodProvider>
+    </SnackbarProvider>
   );
 }
 

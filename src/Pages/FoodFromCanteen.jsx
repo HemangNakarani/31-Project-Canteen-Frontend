@@ -32,6 +32,7 @@ function FoodFromCanteen(props) {
   const classes = useStyles();
   //   const history = useHistory();
   const canteenId = props.match.params.id;
+  const canteenName = props.match.params.name;
 
   const { foodItems, SetAllFoodItems, foodItemsupdated, setFoodItemsUpdated } = useUserFoodState();
 
@@ -51,7 +52,7 @@ function FoodFromCanteen(props) {
       <CssBaseline />
       <Box display="flex" p={1} className={classes.pos}>
         <Box p={1} flexGrow={1} alignSelf="center">
-          <Typography variant="h3">Padmakamal Canteen</Typography>
+          <Typography variant="h3">{canteenName}</Typography>
         </Box>
       </Box>
       <Divider className={classes.divider} variant="fullWidth" />

@@ -66,7 +66,7 @@ var routes = [
     layout: "/"
   },
   {
-    path: "canteens/:id",
+    path: "canteens/:id/:name",
     name: "Food From Canteens",
     component: FoodManageFromCanteen,
     layout: "/"

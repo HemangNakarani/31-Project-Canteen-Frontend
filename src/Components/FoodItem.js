@@ -8,6 +8,7 @@ import { Add } from "@material-ui/icons";
 import { Rating } from "@material-ui/lab";
 import { addItemToCart } from "../APIs/CartApiCalls";
 import { useUserFoodState } from "../Context/UserFoodContext";
+import { useSnackbar } from "notistack";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -60,20 +61,43 @@ const useStyles = makeStyles((theme) => ({
 function FoodItem(props) {
   const { fooditem } = props;
   const [loading, setLoading] = React.useState(false);
-  const { AddItemToCart } = useUserFoodState();
+  const { AddItemToCart, cartItems } = useUserFoodState();
+  const { enqueueSnackbar } = useSnackbar();
+
+  const handleClickVariant = (message, variant) => {
+    enqueueSnackbar(message, { variant });
+    console.log("enqueueSnackbar");
+  };
 
   const handleAdd = () => {
     setLoading(true);
-    addItemToCart(fooditem.id, 1)
-      .then(({ data }) => {
-        console.log(data);
-        AddItemToCart(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setLoading(false);
-      });
+
+    let temparr = cartItems.filter(
+      (obj) => obj.cartfooditem.id === fooditem.id
+    );
+
+    if (temparr.length === 0) {
+      addItemToCart(fooditem.id, 1)
+        .then(({ data, status }) => {
+          if (status === 208) {
+            handleClickVariant(
+              fooditem.name + " is already in the cart",
+              "info"
+            );
+          } else {
+            AddItemToCart(data);
+            handleClickVariant(fooditem.name + " is added to your cart", "success");
+          }
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+        });
+    } else {
+      handleClickVariant(fooditem.name + " is already in the cart", "info");
+      setLoading(false);
+    }
   };
 
   const classes = useStyles();

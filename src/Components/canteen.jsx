@@ -28,7 +28,7 @@ export default function Canteen(props) {
 
   return (
     <Card className={classes.root} onClick={()=>{
-        history.push(`/canteens/${id}`)
+        history.push(`/canteens/${id}/${canteenName}`)
     }}>
       <CardActionArea>
         <CardMedia
