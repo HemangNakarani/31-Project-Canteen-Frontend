@@ -15,6 +15,7 @@ import {
 } from "@material-ui/icons";
 import { deleteCartItem,increaseCartItemApi,decreaseCartItemApi } from "../APIs/CartApiCalls";
 import { useUserFoodState } from "../Context/UserFoodContext";
+import { useSnackbar } from "notistack";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,11 +52,17 @@ const CartItem = (props) => {
 
   const classes = useStyles();
   const theme = useTheme();
+  const { enqueueSnackbar } = useSnackbar();
+
+  const handleClickVariant = (message, variant) => {
+    enqueueSnackbar(message, { variant });
+    console.log("enqueueSnackbar");
+  };
 
   const handleRemove = () => {
     deleteCartItem(id)
       .then(({ data }) => {
-        console.log(data);
+        handleClickVariant(cartfooditem.name + " is removed succesfully", "success");
         RemoveCartItem(id);
       })
       .catch((err) => {
