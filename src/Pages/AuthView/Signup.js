@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import validator from 'validator'
+import validator from "validator";
 import "./Login.css";
 import { SignUp } from "../../APIs/AuthenticationCalls";
 import {
@@ -38,7 +38,6 @@ function Alert(props) {
 }
 
 function SignupPage(props) {
-
   const [details, setDetails] = useState({
     username: "",
     email: "",
@@ -61,30 +60,32 @@ function SignupPage(props) {
   };
 
   function doSignUp() {
-    if (!validator.isEmail(details.email) || details.password.trim().length < 6 || details.username.trim().length === 0)
-    {
-      if(details.username.trim().length === 0)
-      {
+    if (
+      !validator.isEmail(details.email) ||
+      details.password.trim().length < 6 ||
+      details.username.trim().length === 0
+    ) {
+      if (details.username.trim().length === 0) {
         setErrorMessage("Username can't be empty");
-      }
-      else if(!validator.isEmail(details.email))
-      {
+      } else if (!validator.isEmail(details.email)) {
         setErrorMessage("Enter Valid E-mail");
-      }
-      else if(details.password.trim().length < 6)
-      {
+      } else if (details.password.trim().length < 6) {
         setErrorMessage("Password must be atleast 6 characters long");
       }
+
       handleErrorOpen();
-    }
-    else
-    {
+    } else if (details.email.split("@")[1] !== "daiict.ac.in") {
+      setErrorMessage("Sign Up using only DAIICT E-mail Id");
+      handleErrorOpen();
+    } else {
       SignUp(details.username, details.email, details.password)
         .then((data) => {
           history.push("/auth/login");
         })
-       .catch((err) => {
-          setErrorMessage(err.response.data.message || "Something went wrong !");
+        .catch((err) => {
+          setErrorMessage(
+            err.response.data.message || "Something went wrong !"
+          );
           handleErrorOpen();
         });
     }
@@ -92,8 +93,6 @@ function SignupPage(props) {
 
   const history = useHistory();
   const classes = useStyles();
-
-  
 
   return (
     <>
@@ -113,7 +112,7 @@ function SignupPage(props) {
                   setDetails({ ...details, username: e.target.value });
                 }}
                 helperText={
-                  details.username.trim().length === 0 ? 'Enter Username' : ''
+                  details.username.trim().length === 0 ? "Enter Username" : ""
                 }
                 required
                 value={details.username}
@@ -128,9 +127,7 @@ function SignupPage(props) {
                   setDetails({ ...details, email: e.target.value });
                 }}
                 helperText={
-                  
-                  !validator.isEmail(details.email) ? 'Enter valid email !' : '' 
-                  
+                  !validator.isEmail(details.email) ? "Enter valid email !" : ""
                 }
                 required
                 value={details.email}
@@ -138,7 +135,7 @@ function SignupPage(props) {
               />
               <TextField
                 color="secondary"
-                type='password'
+                type="password"
                 className={classes.text}
                 label="Password"
                 name="password"
@@ -146,7 +143,9 @@ function SignupPage(props) {
                   setDetails({ ...details, password: e.target.value });
                 }}
                 helperText={
-                  details.password.trim().length < 6 ? 'Password length must be atleast 6' : ''
+                  details.password.trim().length < 6
+                    ? "Password length must be atleast 6"
+                    : ""
                 }
                 required
                 value={details.password}

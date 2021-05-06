@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
-import { Box, Fab } from "@material-ui/core";
+import { Box, Fab, Paper } from "@material-ui/core";
 import { AssignmentTurnedIn } from "@material-ui/icons";
 import CancelPresentationIcon from "@material-ui/icons/CancelPresentation";
 import moment from "moment";
@@ -15,6 +15,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     overflowX: "scroll",
     scrollbarWidth: "none",
+    borderRadius:16
   },
   details: {},
   content: {
@@ -30,6 +31,12 @@ const useStyles = makeStyles((theme) => ({
   icon: {
     marginRight: theme.spacing(1),
   },
+  typo: {
+    marginTop: theme.spacing(2),
+    marginLeft: theme.spacing(3),
+    marginRight: theme.spacing(3),
+    padding:4
+  },
 }));
 
 export default function LiveOrderComponent({ order }) {
@@ -37,6 +44,8 @@ export default function LiveOrderComponent({ order }) {
 
   const {
     id,
+    username,
+    useremail,
     cartfooditem,
     createdAt,
     undatedAt,
@@ -135,8 +144,11 @@ export default function LiveOrderComponent({ order }) {
 
   return (
     <Card className={classes.root} elevation={5}>
+      <Paper className={classes.typo} variant="outlined">
+      <Typography  variant="subtitle1">{`Ordered By : ${username} [ ${useremail} ]`}</Typography>
+      </Paper>
       <Box display="flex" p={1}>
-        <Box p={1} flexGrow={1}>
+        <Box p={1} flexGrow={1} alignSelf="center">
           <CardContent className={classes.content}>
             <Typography component="h5" variant="h5">
               {cartfooditem.name}
@@ -172,7 +184,6 @@ export default function LiveOrderComponent({ order }) {
         </Box>
         <Box p={1} display="flex" flexDirection="column" alignSelf="center">
           <Box>{setUpdateOrderButton(status)}</Box>
-
           {status === "Pending" ? (
             <Box>
               <Fab variant="extended" className={classes.fab}>

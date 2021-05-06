@@ -2,7 +2,7 @@ import React, { Suspense, useEffect } from "react";
 import { Route, Switch, Redirect, useHistory } from "react-router-dom";
 import routes from "../routes.js";
 import clsx from "clsx";
-import { makeStyles, useTheme, fade } from "@material-ui/core/styles";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -18,8 +18,6 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import GitHubIcon from "@material-ui/icons/GitHub";
-import SearchIcon from "@material-ui/icons/Search";
-import InputBase from "@material-ui/core/InputBase";
 import FastfoodIcon from "@material-ui/icons/Fastfood";
 import RestaurantMenuIcon from "@material-ui/icons/RestaurantMenu";
 import SettingsIcon from "@material-ui/icons/Settings";
@@ -27,7 +25,8 @@ import FaceIcon from "@material-ui/icons/Face";
 import { useUserDispatch, signOut, useUserState } from "../Context/UserContext";
 import { UserFoodProvider, useUserFoodState } from "../Context/UserFoodContext";
 import { checkOutTheCart } from "../APIs/CartApiCalls";
-import { SnackbarProvider } from "notistack";
+import { SnackbarProvider, useSnackbar } from "notistack";
+import { ShoppingCart } from "@material-ui/icons";
 
 const drawerWidth = 240;
 
@@ -105,29 +104,6 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     padding: theme.spacing(3),
   },
-  search: {
-    position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
-    "&:hover": {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
-    },
-    marginLeft: 0,
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(1),
-      width: "auto",
-    },
-  },
-  searchIcon: {
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
   inputRoot: {
     color: "inherit",
   },
@@ -176,7 +152,17 @@ function NotUser(props) {
   const history = useHistory();
   const userDispatch = useUserDispatch();
   const { name } = useUserState();
-  const { ClearCart, UpdateCurrentOrders } = useUserFoodState();
+  const {
+    ClearCart,
+    UpdateCurrentOrders,
+    updateCurrentOrderItem,
+  } = useUserFoodState();
+  const { enqueueSnackbar } = useSnackbar();
+
+  const handleClickVariant = (message, variant) => {
+    enqueueSnackbar(message, { variant });
+    console.log("enqueueSnackbar");
+  };
 
   const handleCheckout = (uuid) => {
     checkOutTheCart(uuid)
@@ -197,6 +183,13 @@ function NotUser(props) {
     ) {
       ClearCart();
       handleCheckout(originalmessage.userid);
+    } else if (originalmessage.tag === "ORDER_UPDATE") {
+      let orderobj = JSON.parse(originalmessage.message);
+      handleClickVariant(
+        `Order Updated by ${originalmessage.username}`,
+        "info"
+      );
+      updateCurrentOrderItem(orderobj);
     }
   };
 
@@ -286,19 +279,6 @@ function NotUser(props) {
           <Typography variant="h6" className={classes.title} noWrap>
             <span style={{ color: "red" }}>M</span>cDA's Dashboard
           </Typography>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ "aria-label": "search" }}
-            />
-          </div>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -340,6 +320,12 @@ function NotUser(props) {
               <FastfoodIcon />
             </ListItemIcon>
             <ListItemText primary="Canteens" />
+          </ListItem>
+          <ListItem button key="Cart" onClick={() => history.push("/cart")}>
+            <ListItemIcon>
+              <ShoppingCart />
+            </ListItemIcon>
+            <ListItemText primary="Cart" />
           </ListItem>
           <ListItem
             button

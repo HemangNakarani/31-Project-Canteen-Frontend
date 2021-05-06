@@ -16,8 +16,8 @@ import {
 import { Payment } from "@material-ui/icons";
 import { useUserState } from "../Context/UserContext";
 import { getAllCartItems } from "../APIs/CartApiCalls";
-import {generate_UUID} from '../Utils';
-import {Pay} from '../APIs/PaymentService';
+import { generate_UUID } from "../Utils";
+import { Pay } from "../APIs/PaymentService";
 
 const useStyles = makeStyles((theme) => ({
   divider: {
@@ -34,15 +34,18 @@ const CartContainer = () => {
     cartItems,
     SetAllCartItems,
     carttotal,
+    cartItemsupdated,
+    setCartItemsUpdated,
   } = useUserFoodState();
 
   const classes = useStyles();
   const { name } = useUserState();
 
   useEffect(() => {
-    if (cartItems.length === 0) {
+    if (!cartItemsupdated) {
       getAllCartItems().then(({ data }) => {
         console.log(data);
+        setCartItemsUpdated(true);
         SetAllCartItems(data);
       });
     }
@@ -94,7 +97,7 @@ const CartContainer = () => {
           <Box p={1}>
             <Paper variant="outlined" className={classes.total}>
               <Typography variant="h5">
-                Total {":>"} <span>{carttotal}</span>
+                Total {": ₹"} <span>{carttotal}</span>
               </Typography>
             </Paper>
           </Box>

@@ -34,4 +34,17 @@ const getCanteenDetails = () => {
   });
 };
 
-export { SignUp, LogIn, ForgotPassword, getCanteenDetails };
+const changeDp = (dp_url) => {
+
+  console.log("changeDp");
+
+  const token = localStorage.getItem("token", "");
+
+  return axios.post(`${SERVER_URI}/api/auth/update-dp?dp_url=${dp_url}`,{}, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export { SignUp, LogIn, ForgotPassword, getCanteenDetails,changeDp };

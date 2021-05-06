@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import clsx from 'clsx';
-import PropTypes from 'prop-types';
+import React, { useState } from "react";
+import clsx from "clsx";
+import PropTypes from "prop-types";
 import {
   Box,
   Button,
@@ -10,45 +10,34 @@ import {
   Divider,
   Grid,
   TextField,
-  makeStyles
-} from '@material-ui/core';
+  makeStyles,
+} from "@material-ui/core";
 
-const states = [
-  {
-    value: 'alabama',
-    label: 'Alabama'
-  },
-  {
-    value: 'new-york',
-    label: 'New York'
-  },
-  {
-    value: 'san-francisco',
-    label: 'San Francisco'
-  }
-];
+import { useUserState } from "../../Context/UserContext";
 
 const useStyles = makeStyles(() => ({
-  root: {}
+  root: {
+    marginTop: 24,
+  },
 }));
 
 const ProfileDetails = ({ className, ...rest }) => {
   const classes = useStyles();
-  const [values, setValues] = useState({
-    firstName: 'virat',
-    lastName: 'kohli',
-    email: '201801140@daiict.ac.in',
-    phone: '455785458',
-    state: 'gujarat',
-    country: 'india'
-  });
 
   const handleChange = (event) => {
     setValues({
       ...values,
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     });
   };
+
+  const { name, email, role } = useUserState();
+
+  const [values, setValues] = useState({
+    username: name,
+    email: email,
+    role: role,
+  });
 
   return (
     <form
@@ -58,129 +47,58 @@ const ProfileDetails = ({ className, ...rest }) => {
       {...rest}
     >
       <Card>
-        <CardHeader
-          subheader="The information can be edited"
-          title="Profile"
-        />
+        <CardHeader subheader="The information can be edited" title="Profile" />
         <Divider />
         <CardContent>
-          <Grid
-            container
-            spacing={3}
-          >
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
+          <Grid container spacing={3}>
+            <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
-                helperText="Please specify the first name"
-                label="First name"
-                name="firstName"
+                helperText="Please specify your Username"
+                label="Username"
+                name="username"
                 onChange={handleChange}
                 required
-                value={values.firstName}
+                value={values.username}
                 variant="outlined"
               />
             </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
+            <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
-                label="Last name"
-                name="lastName"
-                onChange={handleChange}
-                required
-                value={values.lastName}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Email Address"
+                InputProps={{
+                  readOnly: true,
+                }}
+                label="Email Address (Read Only)"
                 name="email"
-                onChange={handleChange}
                 required
                 value={values.email}
                 variant="outlined"
               />
             </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
+            <Grid item md={12} xs={12}>
               <TextField
                 fullWidth
-                label="Phone Number"
-                name="phone"
-                onChange={handleChange}
-                type="number"
-                value={values.phone}
+                InputProps={{
+                  readOnly: true,
+                }}
+                label="Role (Read Only)"
+                name="role"
+                required
+                value={values.role}
                 variant="outlined"
               />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Country"
-                name="country"
-                onChange={handleChange}
-                required
-                value={values.country}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Select State"
-                name="state"
-                onChange={handleChange}
-                required
-                select
-                SelectProps={{ native: true }}
-                value={values.state}
-                variant="outlined"
-              >
-                {states.map((option) => (
-                  <option
-                    key={option.value}
-                    value={option.value}
-                  >
-                    {option.label}
-                  </option>
-                ))}
-              </TextField>
             </Grid>
           </Grid>
         </CardContent>
         <Divider />
-        <Box
-          display="flex"
-          justifyContent="flex-end"
-          p={2}
-        >
+        <Box display="flex" justifyContent="flex-end" p={2}>
           <Button
             color="primary"
             variant="contained"
+            onClick={() => {
+              alert("Nahi Karni Details Save Tumhari!!!");
+            }}
           >
             Save details
           </Button>
@@ -191,7 +109,7 @@ const ProfileDetails = ({ className, ...rest }) => {
 };
 
 ProfileDetails.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
 };
 
 export default ProfileDetails;
