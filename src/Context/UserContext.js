@@ -65,6 +65,10 @@ function loginUser(dispatch, history, response) {
   localStorage.setItem("email", response.email);
   localStorage.setItem("id", response.id);
   localStorage.setItem("role", response.roles[0]);
+  localStorage.setItem(
+    "profile_pic",
+    require(`../Assets/avtar_man.jpeg`).default
+  );
 
   if (response.roles[0] === "ROLE_OWNER") {
     getCanteenDetails()
@@ -85,7 +89,7 @@ function loginUser(dispatch, history, response) {
 }
 
 function signOut(dispatch, history) {
-  localStorage.clear()
+  localStorage.clear();
   dispatch({ type: "SIGN_OUT_SUCCESS" });
   history.push("/auth/");
 }

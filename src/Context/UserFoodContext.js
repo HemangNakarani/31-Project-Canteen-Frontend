@@ -38,6 +38,18 @@ function ownerReducer(state, action) {
       return { ...state, mycurrentorders: [...state.mycurrentorders, ...action.payload] };
     }
 
+    case "UPDATE_CURRENT_ORDER_ITEM": {
+
+      let tempOrders = state.mycurrentorders.map((currentorder) => {
+        if (currentorder.id === action.payload.id) {
+          return { ...currentorder, undatedAt: action.payload["undatedAt"], status: action.payload["status"] };
+        }
+        return currentorder;
+      });
+      return { ...state, mycurrentorders: tempOrders };
+
+    }
+
     case "ADD_CART_ITEM": {
       return { ...state, cartItems: [...state.cartItems, action.payload] };
     }
@@ -143,6 +155,11 @@ function UserFoodProvider({ children }) {
     dispatch({ type: "UPDATE_CURRENT_ORDERS", payload: orderlist });
   };
 
+  const updateCurrentOrderItem = (order) => {
+    dispatch({ type: "UPDATE_CURRENT_ORDER_ITEM", payload: order });
+  };
+
+
   const AddItemToCart = (fooditem) => {
     dispatch({ type: "ADD_CART_ITEM", payload: fooditem });
   };
@@ -201,6 +218,7 @@ function UserFoodProvider({ children }) {
         setCartItemsUpdated,
         setCanteensUpdated,
         setMyCurrentOrdersUpdated,
+        updateCurrentOrderItem
       }}
     >
       <UserFoodDispatchContext.Provider value={dispatch}>

@@ -3,6 +3,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
+import {UPLOADPRESET,CLOUDNAME} from '../Constants';
+
 import {
   Box,
   Fab,
@@ -59,8 +61,54 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function FoodManageItem({ index, item }) {
+function FoodManageItem() {
   const classes = useStyles();
+
+  function UploadWidget(props) {
+    let widget = window.cloudinary.createUploadWidget(
+      {
+        cloudName: CLOUDNAME,
+        uploadPreset: UPLOADPRESET,
+        multiple: false,
+        cropping: true,
+        showSkipCropButton: false,
+        croppingAspectRatio: 1,
+        folder: "new-foods",
+        clientAllowedFormats: ["png", "jpeg"],
+        maxFileSize: 7000000,
+        maxImageFileSize: 3500000,
+        maxVideoFileSize: 40000000,
+        maxImageWidth: 2000,
+        maxImageHeight: 2000,
+        sources: ["local", "instagram", "facebook","google"],
+      },
+      (err, res) => {
+        if (err) console.log(err);
+        if (res.event === "success") {
+          setUpdate({ ...update, image_url:res.info.secure_url});
+        }
+      }
+    );
+
+    const showWidget = () => {
+      widget.open();
+    };
+
+    return (
+      <div>
+        <Fab
+          variant="extended"
+          color="primary"
+          aria-label="Upload Image"
+          className={classes.dialoginput}
+          onClick={showWidget}
+        >
+          <CloudUpload className={classes.dialoginput} />
+          Upload Image
+        </Fab>
+      </div>
+    );
+  }
 
   const [open, setOpen] = React.useState(false);
 
@@ -91,7 +139,7 @@ function FoodManageItem({ index, item }) {
     name: "",
     description: "",
     basePrise: "",
-    image_url: "https://static.toiimg.com/photo/53110049.cms",
+    image_url: "",
   });
 
   return (
@@ -174,15 +222,7 @@ function FoodManageItem({ index, item }) {
               />
             </Grid>
             <Grid display="flex">
-              <Fab
-                variant="extended"
-                color="primary"
-                aria-label="Upload Image"
-                className={classes.dialoginput}
-              >
-                <CloudUpload className={classes.dialoginput} />
-                Upload Image
-              </Fab>
+              <UploadWidget/>
             </Grid>
           </Grid>
         </DialogContent>

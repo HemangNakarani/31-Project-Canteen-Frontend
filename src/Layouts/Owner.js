@@ -49,6 +49,7 @@ function NotOwner(props) {
   const handleNewOrder = () => {
     getOrderByStatus("Pending")
       .then(({ data }) => {
+        console.log(data);
         setPendingOrders(data);
       })
       .catch((err) => {

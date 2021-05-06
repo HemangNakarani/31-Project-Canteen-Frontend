@@ -86,7 +86,10 @@ function FoodItem(props) {
             );
           } else {
             AddItemToCart(data);
-            handleClickVariant(fooditem.name + " is added to your cart", "success");
+            handleClickVariant(
+              fooditem.name + " is added to your cart",
+              "success"
+            );
           }
           setLoading(false);
         })
@@ -128,6 +131,7 @@ function FoodItem(props) {
                 </Typography>
               </Box>
               <Box p={1}>
+              <Typography variant="subtitle2" align="right">{`${fooditem.canteenname}`}</Typography>
                 <Rating
                   name="half-rating-read"
                   value={fooditem.stars / fooditem.number_of_rating}
@@ -137,6 +141,7 @@ function FoodItem(props) {
                 <Typography variant="subtitle2" align="right">
                   {`${fooditem.number_of_rating} Ratings`}
                 </Typography>
+                
               </Box>
             </Box>
           </CardContent>
