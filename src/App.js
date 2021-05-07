@@ -6,6 +6,7 @@ import AuthLayout from "./Layouts/Auth.js";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import { useUserState } from "./Context/UserContext";
 import { SocketContextProvider } from "./Context/SocketContext";
+import Error404 from './Components/Error404';
 
 export default function App() {
   var { isAuthenticated, role } = useUserState();
@@ -34,6 +35,7 @@ export default function App() {
             <PrivateRoute path="/" />
           </SocketContextProvider>
           <PublicRoute path="/auth" component={AuthLayout} />
+          <Route component={Error404} />
         </Switch>
       </BrowserRouter>
     </ThemeProvider>

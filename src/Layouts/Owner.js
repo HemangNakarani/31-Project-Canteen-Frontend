@@ -40,8 +40,7 @@ function NotOwner(props) {
   const { setPendingOrders } = useOwnerState();
   const { enqueueSnackbar } = useSnackbar();
 
-
-  const handleClickVariant = (message,variant) => {
+  const handleClickVariant = (message, variant) => {
     enqueueSnackbar(message, { variant });
     console.log("enqueueSnackbar");
   };
@@ -62,8 +61,13 @@ function NotOwner(props) {
 
     console.log("originalmessage-socketowner");
     if (originalmessage.tag === "NEW_ORDER") {
-      handleNewOrder();
-      handleClickVariant("New Order from " + originalmessage.username ,'success')
+      setTimeout(() => {
+        handleNewOrder();
+        handleClickVariant(
+          "New Order from " + originalmessage.username,
+          "success"
+        );
+      }, 1500);
     }
   };
 

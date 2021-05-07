@@ -59,6 +59,7 @@ export default function LiveOrderComponent({ order }) {
     transferPendingtoCooking,
     transferCookingToCompleted,
     transferCompletedToFullFilled,
+    rejectOrder
   } = useOwnerState();
 
   const handleTransferFromPendingToCooking = () => {
@@ -85,6 +86,16 @@ export default function LiveOrderComponent({ order }) {
     setOrderStatus(id, "FullFilled")
       .then(({ data }) => {
         transferCompletedToFullFilled(id);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleRejected = () => {
+    setOrderStatus(id, "Rejected")
+      .then(({ data }) => {
+        rejectOrder(id);
       })
       .catch((err) => {
         console.log(err);
@@ -186,7 +197,7 @@ export default function LiveOrderComponent({ order }) {
           <Box>{setUpdateOrderButton(status)}</Box>
           {status === "Pending" ? (
             <Box>
-              <Fab variant="extended" className={classes.fab}>
+              <Fab variant="extended" className={classes.fab} onClick={handleRejected}>
                 <CancelPresentationIcon className={classes.icon} />
                 Reject Order
               </Fab>

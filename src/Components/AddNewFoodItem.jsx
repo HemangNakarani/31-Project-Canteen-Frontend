@@ -47,12 +47,12 @@ const useStyles = makeStyles((theme) => ({
   cardcontent: {
     height: 200,
     [theme.breakpoints.down("xs")]: {
-      height: 128,
-      marginTop: 32,
+      height: 10,
+      marginTop: 2,
     },
     [theme.breakpoints.down("sm")]: {
-      height: 128,
-      marginTop: 32,
+      height: 10,
+      marginTop: 2,
     },
   },
 
@@ -74,7 +74,7 @@ function FoodManageItem() {
         showSkipCropButton: false,
         croppingAspectRatio: 1,
         folder: "new-foods",
-        clientAllowedFormats: ["png", "jpeg"],
+        clientAllowedFormats: ["png", "jpeg","jpg"],
         maxFileSize: 7000000,
         maxImageFileSize: 3500000,
         maxVideoFileSize: 40000000,

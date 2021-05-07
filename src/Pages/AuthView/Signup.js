@@ -69,13 +69,12 @@ function SignupPage(props) {
         setErrorMessage("Username can't be empty");
       } else if (!validator.isEmail(details.email)) {
         setErrorMessage("Enter Valid E-mail");
+      } else if (details.email.split("@")[1] !== "daiict.ac.in") {
+        setErrorMessage("Sign Up using only DAIICT E-mail Id");
       } else if (details.password.trim().length < 6) {
         setErrorMessage("Password must be atleast 6 characters long");
       }
 
-      handleErrorOpen();
-    } else if (details.email.split("@")[1] !== "daiict.ac.in") {
-      setErrorMessage("Sign Up using only DAIICT E-mail Id");
       handleErrorOpen();
     } else {
       SignUp(details.username, details.email, details.password)
@@ -104,6 +103,7 @@ function SignupPage(props) {
                 SignUp
               </Typography>
               <TextField
+                id="cy_username"
                 color="secondary"
                 className={classes.text}
                 label="Username"
@@ -119,6 +119,7 @@ function SignupPage(props) {
                 variant="outlined"
               />
               <TextField
+                id="cy_email"
                 color="secondary"
                 className={classes.text}
                 label="Email"
@@ -134,6 +135,7 @@ function SignupPage(props) {
                 variant="outlined"
               />
               <TextField
+                id="cy_password"
                 color="secondary"
                 type="password"
                 className={classes.text}
@@ -161,7 +163,11 @@ function SignupPage(props) {
               autoHideDuration={6000}
               onClose={handleErrorClose}
             >
-              <Alert onClose={handleErrorClose} severity="error">
+              <Alert
+                id="cy_snackbar"
+                onClose={handleErrorClose}
+                severity="error"
+              >
                 {errorMessage}
               </Alert>
             </Snackbar>
@@ -175,7 +181,7 @@ function SignupPage(props) {
                 Welcome to <span style={{ color: "red" }}>M</span>cDA's!
               </h2>
 
-              <p>Login Here </p>
+              <p>Login Here</p>
 
               <button
                 className="btn transparent"

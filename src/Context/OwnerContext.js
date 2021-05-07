@@ -98,6 +98,13 @@ function ownerReducer(state, action) {
       };
     }
 
+    case "REJECTED": {
+      return {
+        ...state,
+        pendingorders: state.pendingorders.filter((porder) => porder.id !== action.payload),
+      };
+    }
+
     case "SET_MYFOODITEMS_UPDATED": {
       return { ...state, myfoodItemsupdated: true };
     }
@@ -163,6 +170,10 @@ function OwnerProvider({ children }) {
     dispatch({ type: "READY_TO_FULLFILLED", payload: orderitem });
   };
 
+  const rejectOrder = (orderitem) => {
+    dispatch({ type: "REJECTED", payload: orderitem });
+  };
+
   const setMyFoodItemsUpdated = () => {
     dispatch({ type: "SET_MYFOODITEMS_UPDATED" });
   };
@@ -196,7 +207,8 @@ function OwnerProvider({ children }) {
         setCookingOrdersUpdated,
         setPendingOrdersUpdated,
         setMyFoodItems,
-        setMyFoodItemsUpdated
+        setMyFoodItemsUpdated,
+        rejectOrder
       }}
     >
       <OwnerDispatchContext.Provider value={dispatch}>
