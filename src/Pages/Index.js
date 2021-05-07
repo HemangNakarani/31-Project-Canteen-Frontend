@@ -35,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
     padding: 24,
   },
   input: {
+    marginLeft:12,
     width: 324,
   },
 }));
@@ -77,7 +78,7 @@ function IndexPage() {
     <>
       <CssBaseline />
       <Box display="flex" p={1} className={classes.pos} flexWrap="wrap">
-        <Box p={1} flexGrow={1} alignSelf="center">
+        <Box p={1} flexGrow={3} alignSelf="center">
           {searchText === "" ? (
             <Typography variant="h3">
               Welcome to <span style={{ color: "red" }}>M</span>cDA's{" "}
@@ -90,7 +91,7 @@ function IndexPage() {
             </Typography>
           )}
         </Box>
-        <Box alignSelf="center" flexDirection="column">
+        <Box alignSelf="center" flexDirection="column" flexGrow={1}>
           <Paper component="form" className={classes.paper}>
             <IconButton aria-label="search">
               <SearchIcon />

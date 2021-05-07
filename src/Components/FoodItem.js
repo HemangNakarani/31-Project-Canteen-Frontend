@@ -106,7 +106,7 @@ function FoodItem(props) {
   const classes = useStyles();
   return (
     <div className={classes.div}>
-      <Box display="flex" flexDirection="column">
+      <Box display="flex" flexDirection="column" flexWrap="wrap">
         <Box position="absolute" flexWrap="flex-end" className={classes.box}>
           <img
             src={fooditem.image_url}
@@ -121,27 +121,27 @@ function FoodItem(props) {
         </Box>
         <Card className={classes.root} variant="outlined">
           <CardContent className={classes.cardcontent}>
-            <Box display="flex">
+            <Box display="flex" flexWrap="wrap">
               <Box flexGrow={1}>
                 <Typography variant="h6" component="h2">
                   {fooditem.name}
                 </Typography>
-                <Typography color="textSecondary" noWrap>
+                <Typography color="textSecondary">
                   {fooditem.description}
                 </Typography>
               </Box>
-              <Box p={1}>
-              <Typography variant="subtitle2" align="right">{`${fooditem.canteenname}`}</Typography>
-                <Rating
-                  name="half-rating-read"
-                  value={fooditem.stars / fooditem.number_of_rating}
-                  precision={0.2}
-                  readOnly
-                />
+              <Box p={1} flexGrow={1}>
+                <Typography
+                  variant="subtitle2"
+                  align="right"
+                >{`${fooditem.canteenname}`}</Typography>
+                 <Typography
+                  variant="subtitle2"
+                  align="right"
+                >{`${fooditem.stars / (fooditem.number_of_rating+1)} ✯`}</Typography>
                 <Typography variant="subtitle2" align="right">
                   {`${fooditem.number_of_rating} Ratings`}
                 </Typography>
-                
               </Box>
             </Box>
           </CardContent>
