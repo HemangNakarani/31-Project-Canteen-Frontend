@@ -97,26 +97,25 @@ function Login(props) {
   };
 
   function doLogIn() {
-    if (details.password.trim().length < 6 || details.username.trim().length === 0)
-    {
-      if(details.username.trim().length === 0)
-      {
+    if (
+      details.password.trim().length < 6 ||
+      details.username.trim().length === 0
+    ) {
+      if (details.username.trim().length === 0) {
         setErrorMessage("Username can't be empty");
-      }
-      else if(details.password.trim().length < 6)
-      {
+      } else if (details.password.trim().length < 6) {
         setErrorMessage("Password must be atleast 6 characters long");
       }
       handleErrorOpen();
-    }
-    else{
+    } else {
       LogIn(details.username, details.password)
         .then(({ data }) => {
           loginUser(userDispatch, history, data);
         })
         .catch((err) => {
-          
-          setErrorMessage(err.response.data.message || "Something Went Wrong !!");
+          setErrorMessage(
+            err.response.data.message || "Something Went Wrong !!"
+          );
           handleErrorOpen();
         });
     }
@@ -132,6 +131,7 @@ function Login(props) {
                 Log In
               </Typography>
               <TextField
+                id="cy_username"
                 color="secondary"
                 className={classes.text}
                 label="Username"
@@ -139,14 +139,14 @@ function Login(props) {
                 onChange={(e) => {
                   setDetails({ ...details, username: e.target.value });
                 }}
-                
                 required
                 value={details.username}
                 variant="outlined"
               />
               <TextField
+                id="cy_password"
                 color="secondary"
-                type='password'
+                type="password"
                 className={classes.text}
                 label="Password"
                 name="password"
@@ -154,7 +154,9 @@ function Login(props) {
                   setDetails({ ...details, password: e.target.value });
                 }}
                 helperText={
-                  details.password.trim().length < 6 ? 'Password length must be atleast 6' : ''
+                  details.password.trim().length < 6
+                    ? "Password length must be atleast 6"
+                    : ""
                 }
                 required
                 value={details.password}
@@ -177,7 +179,7 @@ function Login(props) {
               autoHideDuration={6000}
               onClose={handleErrorClose}
             >
-              <Alert onClose={handleErrorClose} severity="error">
+              <Alert id="cy_snackbar" onClose={handleErrorClose} severity="error">
                 {errorMessage}
               </Alert>
             </Snackbar>
