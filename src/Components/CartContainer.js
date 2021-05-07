@@ -13,9 +13,9 @@ import {
   Grow,
   Fab,
 } from "@material-ui/core";
-import { Payment } from "@material-ui/icons";
+import { Payment, Clear } from "@material-ui/icons";
 import { useUserState } from "../Context/UserContext";
-import { getAllCartItems } from "../APIs/CartApiCalls";
+import { getAllCartItems, clearCart } from "../APIs/CartApiCalls";
 import { generate_UUID } from "../Utils";
 import { Pay } from "../APIs/PaymentService";
 
@@ -36,6 +36,7 @@ const CartContainer = () => {
     carttotal,
     cartItemsupdated,
     setCartItemsUpdated,
+    ClearCart,
   } = useUserFoodState();
 
   const classes = useStyles();
@@ -44,7 +45,6 @@ const CartContainer = () => {
   useEffect(() => {
     if (!cartItemsupdated) {
       getAllCartItems().then(({ data }) => {
-        console.log(data);
         setCartItemsUpdated(true);
         SetAllCartItems(data);
       });
@@ -57,6 +57,16 @@ const CartContainer = () => {
       "Payment Kr",
       "height=800,width=800,modal=yes,alwaysRaised=yes"
     );
+  };
+
+  const handleClearCart = () => {
+    clearCart()
+      .then(({ data }) => {
+        ClearCart();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   if (cartItems.length === 0) {
@@ -93,10 +103,18 @@ const CartContainer = () => {
             <Fab variant="extended" onClick={handlePayment} color="secondary">
               <Payment />- Pay & Checkout
             </Fab>
+            <Fab
+              id="cy_clear_cart"
+              variant="extended"
+              onClick={handleClearCart}
+              color="secondary"
+            >
+              <Clear /> Clear Cart
+            </Fab>
           </Box>
           <Box p={1}>
             <Paper variant="outlined" className={classes.total}>
-              <Typography variant="h5">
+              <Typography variant="h5" id="cy_cart_total">
                 Total {": ₹"} <span>{carttotal}</span>
               </Typography>
             </Paper>

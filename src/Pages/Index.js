@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     padding: 24,
   },
   input: {
-    marginLeft:12,
+    marginLeft: 12,
     width: 324,
   },
 }));
@@ -93,10 +93,11 @@ function IndexPage() {
         </Box>
         <Box alignSelf="center" flexDirection="column" flexGrow={1}>
           <Paper component="form" className={classes.paper}>
-            <IconButton aria-label="search">
+            <IconButton aria-label="search" id="cy_search_btn">
               <SearchIcon />
             </IconButton>
             <InputBase
+              id="cy_search_text"
               className={classes.input}
               value={searchText}
               placeholder="Search Food, About Food and Canteens..."
@@ -109,6 +110,7 @@ function IndexPage() {
         ) : (
           <Box p={1}>
             <Fab
+              id="cy_cancel_search"
               color="secondary"
               className={classes.fabicon}
               justify="flex-end"
@@ -120,6 +122,7 @@ function IndexPage() {
         )}
         <Box p={1}>
           <Fab
+            id="cy_cart_button_dashboard"
             color="secondary"
             className={classes.fabicon}
             justify="flex-end"

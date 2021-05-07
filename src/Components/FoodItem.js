@@ -105,7 +105,7 @@ function FoodItem(props) {
 
   const classes = useStyles();
   return (
-    <div className={classes.div}>
+    <div className={classes.div} identifier="cy_fooditem">
       <Box display="flex" flexDirection="column" flexWrap="wrap">
         <Box position="absolute" flexWrap="flex-end" className={classes.box}>
           <img
@@ -154,6 +154,8 @@ function FoodItem(props) {
                 <CircularProgress />
               ) : (
                 <Fab
+                  identifier="cy_add_to_cart_button"
+                  id="cy_add_to_cart"
                   color="secondary"
                   justify="flex-end"
                   size="small"
