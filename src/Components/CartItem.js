@@ -97,7 +97,7 @@ const CartItem = (props) => {
   }
 
   return (
-    <Paper variant="outlined" className={classes.root}>
+    <Paper variant="outlined" className={classes.root} identifier="cy_cart_item">
       <Grid container alignItems="center" direction="row">
         <Grid item md={3} sm={3} xs={12}>
           <img
@@ -113,8 +113,8 @@ const CartItem = (props) => {
               <Typography component="h5" variant="h5">
                 {cartfooditem.name}
               </Typography>
-              <Typography variant="subtitle1" color="secondary">
-                $ {cartfooditem.basePrise}
+              <Typography variant="subtitle1" color="secondary" identifier="cy_cart_prizetag">
+              ₹ {cartfooditem.basePrise}
               </Typography>
               <Typography variant="caption" color="textSecondary">
                 {cartfooditem.description}
@@ -131,7 +131,7 @@ const CartItem = (props) => {
                   <AddCircleOutlineRounded />
                 )}
               </IconButton>
-              <Typography variant="h5" color="textPrimary">
+              <Typography variant="h5" color="textPrimary" identifier="cy_cart_quantity">
                 {quantity}
               </Typography>
               <IconButton
@@ -145,6 +145,7 @@ const CartItem = (props) => {
                 )}
               </IconButton>
               <Button
+                identifier="cy_cart_remove_item"
                 variant="contained"
                 color="primary"
                 onClick={handleRemove}

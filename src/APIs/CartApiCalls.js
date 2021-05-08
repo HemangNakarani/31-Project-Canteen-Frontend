@@ -87,16 +87,28 @@ const checkOutTheCart = (uuid) => {
 };
 
 const myCurrentOrders = () => {
-    console.log("myCurrentOrders");
-  
-    const token = localStorage.getItem("token", "");
-  
-    return axios.get(`${SERVER_URI}/api/cart/myorders`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-  };
+  console.log("myCurrentOrders");
+
+  const token = localStorage.getItem("token", "");
+
+  return axios.get(`${SERVER_URI}/api/cart/myorders`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+const clearCart = () => {
+  console.log("clearCart");
+
+  const token = localStorage.getItem("token", "");
+
+  return axios.delete(`${SERVER_URI}/api/cart/clear`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
 
 export {
   getAllCartItems,
@@ -105,5 +117,6 @@ export {
   increaseCartItemApi,
   decreaseCartItemApi,
   checkOutTheCart,
-  myCurrentOrders
+  myCurrentOrders,
+  clearCart,
 };

@@ -42,7 +42,12 @@ export default function Orders({ children }) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 
-  const { SetAllCurrentOrders, mycurrentorders,mycurrentordersupdated, setMyCurrentOrdersUpdated } = useUserFoodState();
+  const {
+    SetAllCurrentOrders,
+    mycurrentorders,
+    mycurrentordersupdated,
+    setMyCurrentOrdersUpdated,
+  } = useUserFoodState();
 
   useEffect(() => {
     if (!mycurrentordersupdated) {
@@ -55,7 +60,7 @@ export default function Orders({ children }) {
           console.log(err);
         });
     }
-  },[]);
+  }, []);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -68,6 +73,7 @@ export default function Orders({ children }) {
   return (
     <div>
       <Fab
+        id="cy_ongoing_orders"
         color="secondary"
         className={classes.fabicon}
         justify="flex-end"
@@ -76,6 +82,7 @@ export default function Orders({ children }) {
         <OutdoorGrillRounded />
       </Fab>
       <Dialog
+        id="cy_ongoing_orders_dialog"
         fullScreen
         open={open}
         onClose={handleClose}

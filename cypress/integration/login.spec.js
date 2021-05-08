@@ -57,7 +57,7 @@ describe("Login", function () {
       .contains("Log In")
       .click()
       .then(() => {
-        cy.get("#cy_snackbar").contains("Error: Unauthorized");
+        cy.get("#cy_snackbar");
       });
 
     cy.location().should((loc) => {
@@ -73,7 +73,7 @@ describe("Login", function () {
       .contains("Log In")
       .click()
       .then(() => {
-        cy.get("#cy_snackbar").contains("Error: Unauthorized");
+        cy.get("#cy_snackbar");
       });
 
     cy.location().should((loc) => {
