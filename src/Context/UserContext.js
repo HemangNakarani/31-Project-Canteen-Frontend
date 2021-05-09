@@ -67,7 +67,7 @@ function loginUser(dispatch, history, response) {
   localStorage.setItem("role", response.roles[0]);
   localStorage.setItem(
     "profile_pic",
-    require(`../Assets/avtar_man.jpeg`).default
+    response.profile_pic || require(`../Assets/avtar_man.jpeg`).default
   );
 
   if (response.roles[0] === "ROLE_OWNER") {
